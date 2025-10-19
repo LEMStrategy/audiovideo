@@ -6,18 +6,41 @@ Spyder Editor
 import yt_dlp
 from pathlib import Path
 import re
+import sys
+import os
 
 # Configuration
-SAVE_PATH = '/mnt/Media/Digital/Audio/Youtube_Downloads/' # Output directory
+#
+# Query Local/NAS Save
+print("Select Download Localion:")
+print("1: Local")
+print("2: NAS")
+download_type = input("Enter choice (1 or 2): ").strip()
+#
+file_system = os.name
+if file_system == "posix" or file_system == "darwin" or file_system == "linux" :
+    if download_type == 1:
+        SAVE_PATH = Path('/~/Downloads/Audio/Youtube_Downloads/') # Output directory)
+    else:
+        SAVE_PATH = Path('/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
+elif file_system == "nt" or file_system == "win32" or file_system == "win64" :
+    if download_type == 1:
+        SAVE_PATH = Path('C:/C_Temp/Media') # Output directory)
+    else:
+        SAVE_PATH = Path('K:/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
+else:
+    print("Error: Unknown OS/Download Typ Combo ={} and {}>".format(file_system, download_type))
+    sys.exit(1)
+#
 VERBOSE = True  # Set to True for detailed logging
 
 def sanitize_path_element(name: str) -> str:
     """
     Sanitize a string to be a valid path element (filename or directory) for Windows and Linux.
-    
+
     Args:
         name: The input string to sanitize.
-    
+
     Returns:
         A sanitized string safe for use as a path element.
     """
@@ -26,10 +49,10 @@ def sanitize_path_element(name: str) -> str:
     # Linux: /
     invalid_chars = r'[<,>:"/\\|?*\x00-\x1F]'
     sanitized = re.sub(invalid_chars, '', name)
-    
+
     # Remove leading/trailing spaces and periods (Windows restriction)
     sanitized = sanitized.strip().strip('.')
-    
+
     # Handle reserved Windows names (e.g., CON, PRN, AUX, NUL, COM1, LPT1)
     reserved_names = {
         'CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4', 'COM5',
@@ -38,11 +61,11 @@ def sanitize_path_element(name: str) -> str:
     }
     if sanitized.upper() in reserved_names:
         sanitized = f"_{sanitized}"
-    
+
     # Ensure the name is not empty
     if not sanitized:
         sanitized = "unnamed"
-    
+
     return sanitized
 
 def get_playlist_info(playlist_url):
@@ -145,7 +168,7 @@ def download_playlist(playlist_url, output_type, save_path, start_index=1):
 def main():
     """Main function to handle user input and initiate downloads."""
     print("DEBUG: Running updated script version (2025-05-16)")
-    
+
     # Query source type
     print("Select YouTube source type:")
     print("1: Single Video")
