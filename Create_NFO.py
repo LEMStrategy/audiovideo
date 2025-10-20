@@ -51,7 +51,7 @@ def get_image_stream_index_type(m4v_file):
         )
        # Parse the JSON output
         output = json.loads(result.stdout)
-        # 
+        #
         image_type = None
         # Iterate through streams to find PNG codec
         for stream in output['streams']:
@@ -77,7 +77,7 @@ def get_image_stream_index_type(m4v_file):
                 if stream['codec_name'] == 'webp':
                     image_type = '.webp'
                     image_list.append((stream['index'], image_type ))
-                elif stream['codec_name'] == 'heic': 
+                elif stream['codec_name'] == 'heic':
                     image_type = '.heic'
                     image_list.append((stream['index'], image_type ))
                 elif stream['codec_name'] == 'heif':
@@ -225,8 +225,8 @@ def download_poster(poster_path, save_dir):
     poster_url = f"{base_url}{poster_path}"
     image_ext = Path(poster_path).suffix
     poster_name = "poster"+image_ext
-    poster_file = save_dir / poster_name 
-    
+    poster_file = save_dir / poster_name
+
     # Download the image
     try:
         response = requests.get(poster_url, stream=True)
@@ -243,7 +243,7 @@ def download_poster(poster_path, save_dir):
 
 def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=None, show=None, details=None):
     """Fetch TV show metadata from TMDb."""
-    if not(show and details): 
+    if not(show and details):
         search_results = tv.search(series_name)['results']
         if len(search_results) == 0:
             metadata = {
@@ -282,7 +282,7 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
     #
     show_id = show["id"]
     details = tv.details(show_id)
-    
+
     metadata = {
         "title": details["name"],
         "plot": details["overview"],
@@ -291,7 +291,7 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
         "genre": [g["name"] for g in details["genres"]],
         "studio": details["networks"][0]["name"] if details["networks"] else None,
     }
-    
+
     if season_num and episode_num:
         # Fetch episode data (example: Season 1, Episode 1)
         season_details = season.details(show_id, season_num=int(season_num) )  #, int(episode_num))
@@ -331,7 +331,7 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
     poster = None
     fanart = None
     thumb = None
-    
+
     try:
         media_info = MediaInfo.parse(m4v_file)
     except Exception as e:
@@ -374,9 +374,9 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
                 showtitle = series_name  # Often series name   sanitize_filename(track.album)
                 title = sanitize_filename(track.track_name) or track.title
                 season = track.season
-                episode = track.episode 
+                episode = track.episode
                 aired = track.recorded_date or track.encoded_date
-                if not season and track.track:  # 
+                if not season and track.track:  #
                     season = track.track
                 elif not season:
                     season = '1'
@@ -407,8 +407,8 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
                                screenplay=screenplay, runtime=runtime, actor=actor,
                                country=country, language=language, subtitles=subtitles,
                                poster=poster, fanart=fanart,
-                               showtitle=showtitle, 
-                               season=season, 
+                               showtitle=showtitle,
+                               season=season,
                                episode=episode,
                                aired=aired,
                                thumb=thumb
@@ -449,12 +449,12 @@ def _build_metadata(title, nfo_type, m4v_file, overwrite, **kwargs):
 
 def create_nfo(metadata, output_file, overwrite=True, nfo_type='movie'):
     """Create an NFO file from the extracted metadata."""
-    # rename in case movie filename  is not the same as the movie title in metadata    
+    # rename in case movie filename  is not the same as the movie title in metadata
     # new_name =  output_file  # .with_stem(metadata['title'])
     if output_file.exists() and overwrite==False:
             # print("NFO file ={} already exists and overwrite={}".format(output_file, overwrite))
             return
-   
+
     #
     root = ET.Element(nfo_type)
     #
@@ -503,13 +503,13 @@ def is_kodi_compliant(filename, season, episode):
     # Pattern: S followed by 2 digits, E followed by 2 digits, before extension
     pattern = r"S(\d{2})E(\d{2})(?=\.\w+$)"
     pattern_match = re.search(pattern, filename, re.IGNORECASE)
-    
+
     if not pattern_match:
         return False  # No SxxExx pattern found
-    
+
     # Extract season and episode from filename
     file_season, file_episode = pattern_match.groups()
-    
+
     # Compare with passed metadata (padded to 2 digits)
     return file_season == str(season).zfill(2) and file_episode == str(episode).zfill(2)
 
@@ -565,10 +565,10 @@ def get_nfo (m4v_file, overwrite=True, nfo_type='movie', series_name=None):
 def extract_season_episode(file_path: Path) -> tuple[int, int] | None:
     """
     Extract season and episode numbers from a file name with format sNNeNN (case-insensitive).
-    
+
     Args:
         file_path: Path object representing the file
-        
+
     Returns:
         Tuple of (season_num, episode_num) or None if no match found
     """
@@ -577,7 +577,7 @@ def extract_season_episode(file_path: Path) -> tuple[int, int] | None:
     if match:
         return int(match.group(1)), int(match.group(2))
     return None
-    
+
 def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="movie", series_name=None):
     #
     if do_subdirectories:
@@ -613,7 +613,7 @@ def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="mo
                     # print("NFO file ={} already exists and overwrite={}".format(nfo_file, overwrite))
                     return
                 # Create NFO file
-                create_nfo(metadata, nfo_file, overwrite=replace_nfos, nfo_type=nfo_type)        
+                create_nfo(metadata, nfo_file, overwrite=replace_nfos, nfo_type=nfo_type)
             else:
                 print("Invalid Season/Episode data={}/{} for show={} in filename={}".format(season_num, episode_num, series_name, video))
         else:
@@ -649,12 +649,16 @@ def do_series_nfos(dir_list, replace_nfos=True):
         nfo_type = 'episodedetails'
         do_nfos(directory=showdir, do_subdirectories=True, replace_nfos=replace_nfos, nfo_type=nfo_type, series_name=series_name)
     return
-        
-    
+
+
 
 if __name__ == "__main__":
-    # 
-    # 
+    #
+    print("Select Download Localion:")
+    print("1: Local")
+    print("2: NAS")
+    download_type = input("Enter choice (1 or 2): ").strip()
+    #
     process = ''
     response = input("DO YOU WANT TO CREATE NFOS FOR MOVIES (M/n) OR TV Shows (S/s): ")
     if response=='M' or response=='m'  :
@@ -663,21 +667,28 @@ if __name__ == "__main__":
         process = "tvshow"
     else:
         print("Invalid Response ={}".format(response))
-        
+
     #
     file_system = os.name
     if file_system == "posix" or file_system == "darwin" or file_system == "linux" :
-        path_prefix = "/mnt/Media"
+        if download_type == '2':
+            path_prefix = "/mnt/Media/Boris_iTunes"
+        elif download_type == '1':
+            path_prefix = "~/Downloads"
     elif file_system == "nt" or file_system == "win32" or file_system == "win64" :
-        path_prefix = "K:"
+        if download_type == '2':
+            path_prefix = "K:/Boris_iTunes"
+        elif download_type == '1':
+            path_prefix = "C:/C_Temp/"
+
     else:
         print("Error: Unknown OS name ={}>".format(file_system))
         sys.exit(1)
     #
     if process == 'movie':
-        video_library_directory = Path(path_prefix + '/Boris_iTunes/Movies/')
+        video_library_directory = Path(path_prefix + '/Movies/')
     elif process == 'tvshow':
-        video_library_directory = Path(path_prefix + '/Boris_iTunes/TV Shows/')
+        video_library_directory = Path(path_prefix + '/TV Shows/')
     #
     response = input("Use DEFAULT video_library (y/n): ")
     while response=='n' or response=='N'  :
@@ -689,9 +700,9 @@ if __name__ == "__main__":
             print("Error: Invalid Path ={}>".format(new_dir))
             print("  TRY AGAIN!")
     #
-    
+
     print("Creating NFOs for video_library={}".format(video_library_directory))
-    # 
+    #
     replace_nfos = False
     response = input("Replace existing NFOs and Artwork (y/n): ")
     if response=='y' or response=='Y'  :
@@ -703,7 +714,7 @@ if __name__ == "__main__":
         else:
             do_subdirectories = False
         do_nfos(directory=video_library_directory, do_subdirectories=do_subdirectories, replace_nfos=replace_nfos, nfo_type=process)
-            
+
     elif process == 'tvshow':
         do_subdirectories = True
         if video_library_directory == Path(path_prefix + '/Boris_iTunes/TV Shows/'):
@@ -711,5 +722,3 @@ if __name__ == "__main__":
             do_series_nfos(dir_list, replace_nfos=replace_nfos)
         else:
             do_series_nfos([video_library_directory], replace_nfos=replace_nfos)
-        
-    

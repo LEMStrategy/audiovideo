@@ -19,13 +19,13 @@ download_type = input("Enter choice (1 or 2): ").strip()
 #
 file_system = os.name
 if file_system == "posix" or file_system == "darwin" or file_system == "linux" :
-    if download_type == 1:
+    if download_type == '1':
         SAVE_PATH = Path('/~/Downloads/Audio/Youtube_Downloads/') # Output directory)
     else:
         SAVE_PATH = Path('/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
 elif file_system == "nt" or file_system == "win32" or file_system == "win64" :
-    if download_type == 1:
-        SAVE_PATH = Path('C:/C_Temp/Media') # Output directory)
+    if download_type == '1':
+        SAVE_PATH = Path('C:/C_Temp/Media/Youtube_Downloads') # Output directory)
     else:
         SAVE_PATH = Path('K:/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
 else:
