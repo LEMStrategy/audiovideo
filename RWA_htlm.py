@@ -12,85 +12,85 @@ data = {
                  'B3 Digitas/ACXRWA', 'Polymesh', 'Realio Network', 'TSE/JPX Digital Securities',
                  'DTCC Collateral Pilot', 'SWIFT Blockchain', 'Ripple (XRP Ledger)', 'LME Modernization',
                  'Solana', 'Ethereum', 'SHFE Initiatives', 'Kalshi', 'Polymarket', 'Crypto.com', 'RobinHood',
-                 'PredictIt', 'Augur', 'Provenance Foundation'],
+                 'PredictIt', 'Augur', 'Provenance Foundation', 'Bakkt', 'Tether', 'Circle'],
     'Encrypted P2P Communication (High Impact)': [
         'High', 'High', 'High', 'Medium', 'Medium', 'High', 'Medium', 'High', 'Medium', 'Medium', 'Medium',
         'Medium', 'Medium', 'Medium', 'Medium', 'Low', 'Medium', 'Medium', 'Low', 'Low', 'Medium', 'Low',
-        'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium'
+        'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium'
     ],
     'DID/Verified Credentials (W3C-Compliant) (High Impact)': [
         'High', 'High', 'High', 'Medium', 'Medium', 'High', 'Medium', 'High', 'Medium', 'Medium', 'Medium',
         'Medium', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'Low', 'Low', 'Medium', 'Medium', 'Low',
-        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'High'
+        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'High', 'High', 'Medium', 'High'
     ],
     'Private Ownership with Real-World Legal Finality (MLETR-like) (High Impact)': [
         'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High',
         'High', 'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium',
-        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'High'
+        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'High', 'High', 'Medium', 'High'
     ],
     'Private RWA Trading with T+0 Settlement (High Impact)': [
         'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'Medium',
         'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Low', 'High', 'Medium', 'Low',
-        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium'
+        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'High', 'High'
     ],
     'Cross-Border T+0 for RWAs (Medium Impact)': [
         'High', 'High', 'High', 'High', 'High', 'Medium', 'High', 'Medium', 'High', 'Medium', 'Medium',
         'Medium', 'Medium', 'High', 'Medium', 'Low', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium',
-        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'High'
+        'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'High', 'Medium', 'High', 'High'
     ],
     'TradFi Integration Friction/Cost (High Impact)': [
         'Low', 'Low', 'Low', 'Low', 'Low', 'Low', 'Low', 'Low', 'Medium', 'Low', 'Low', 'Low', 'Low',
         'Medium', 'Low', 'Low', 'Low', 'Low', 'Low', 'Medium', 'Medium', 'Low',
-        'Low', 'Medium', 'Medium', 'Low', 'Low', 'Medium', 'Low'
+        'Low', 'Medium', 'Medium', 'Low', 'Low', 'Medium', 'Low', 'Low', 'Low', 'Low'
     ],
     'Centralization vs. Decentralization Balance (Medium Impact)': [
         'High', 'Medium', 'Medium', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'Medium', 'Medium',
         'Medium', 'Medium', 'High', 'Low', 'Low', 'Low', 'Medium', 'Low', 'Medium', 'Medium', 'Low',
-        'Medium', 'High', 'High', 'Medium', 'Medium', 'High', 'Medium'
+        'Medium', 'High', 'High', 'Medium', 'Medium', 'High', 'Medium', 'Medium', 'Low', 'Medium'
     ],
     'Privacy for Positions/Flows (Anti-Reverse Engineering) (Medium Impact)': [
         'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium',
         'High', 'Medium', 'Medium', 'High', 'Medium', 'Low', 'Medium', 'Medium', 'Medium', 'Low',
-        'High', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'High'
+        'High', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'High', 'Medium', 'High'
     ],
     'Minimizes Oracles/Bridges Risks (Medium Impact)': [
         'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium',
         'High', 'Medium', 'Medium', 'High', 'Medium', 'Medium', 'High', 'Low', 'Low', 'Medium',
-        'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium'
+        'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium'
     ],
     'Liquidity Fragmentation Risk (High Impact)': [
         'Low', 'Medium', 'Low', 'Medium', 'Low', 'Medium', 'Low', 'Medium', 'Medium', 'Medium', 'Low', 'Medium',
         'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'Medium', 'Medium', 'Medium',
-        'Low', 'Low', 'Low', 'Medium', 'Medium', 'Medium', 'Medium'
+        'Low', 'Low', 'Low', 'Medium', 'Medium', 'Medium', 'Medium', 'Low', 'Low', 'Low'
     ],
     'Susceptibility to Malicious Manipulation/Hacking (High Impact)': [
         'Low', 'Low', 'Low', 'Medium', 'Low', 'Low', 'Low', 'Low', 'Medium', 'Low', 'Low', 'Medium', 'Low',
         'Medium', 'Low', 'Low', 'Medium', 'Medium', 'Low', 'High', 'High', 'Low',
-        'Low', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'Medium'
+        'Low', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'Medium', 'Low', 'Medium', 'Low'
     ],
     'Regulatory Adaptability to Evolving Global Standards (High Impact)': [
         'High', 'Medium', 'Medium', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'Medium', 'Medium',
         'Medium', 'Medium', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'Low', 'Medium', 'Medium', 'Low',
-        'High', 'High', 'High', 'High', 'High', 'High', 'High'
+        'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'Medium', 'High'
     ],
     'Likelihood of Long Term Open Protocol-based DeFi (Medium Impact)': [
         'High', 'Medium', 'Medium', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'High', 'Medium', 'Medium',
         'Medium', 'Medium', 'High', 'Low', 'Low', 'Low', 'High', 'Low', 'High', 'High', 'Low',
-        'Medium', 'High', 'High', 'Medium', 'Medium', 'High', 'High'
+        'Medium', 'High', 'High', 'Medium', 'Medium', 'High', 'High', 'Medium', 'Medium', 'Medium'
     ],
     'Incumbent Advantages (High Impact)': [
         'Medium', 'High', 'High', 'Medium', 'High', 'Medium', 'High', 'Medium', 'Medium', 'High', 'High',
         'Medium', 'Medium', 'Medium', 'Medium', 'High', 'High', 'Medium', 'High', 'Low', 'Low', 'Medium',
-        'Low', 'Low', 'Medium', 'High', 'Medium', 'Low', 'Medium'
+        'Low', 'Low', 'Medium', 'High', 'Medium', 'Low', 'Medium', 'High', 'High', 'High'
     ],
     'Regulatory Tailwinds (High Impact)': [
         'High', 'Medium', 'Medium', 'High', 'High', 'High', 'High', 'Medium', 'High', 'High', 'High',
         'Medium', 'Medium', 'High', 'Medium', 'High', 'High', 'Medium', 'Medium', 'Medium', 'Medium', 'Medium',
-        'High', 'High', 'High', 'High', 'High', 'High', 'High'
+        'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High', 'High'
     ],
     'Points': [
         55.0, 49.0, 50.0, 50.5, 50.0, 48.0, 48.0, 49.0, 47.0, 46.0, 48.0, 42.0, 46.0, 47.0, 39.5, 39.5,
-        39.5, 41.0, 34.0, 39.5, 39.5, 32.5, 48.0, 49.0, 47.0, 46.0, 45.0, 44.0, 46.5  # Updated with Provenance
+        39.5, 41.0, 34.0, 39.5, 39.5, 32.5, 48.0, 49.0, 47.0, 46.0, 45.0, 44.0, 46.5, 48.0, 50.0, 51.0
     ]
 }
 
@@ -129,35 +129,38 @@ colors = {
 }
 
 color_map = {
-    'Abaxx (ID++/PDT)': colors['Abaxx'],           # Yellow
-    'LSE DMI': colors['Perm_Chain'],               # Blue
-    'Deutsche Boerse Seturion': colors['Perm_Chain'],  # Blue
-    'Ondo Finance': colors['DeFi_TradFi'],         # Green
-    'ICE Digital Assets': colors['Perm_Chain'],    # Blue
-    'Securitize': colors['DeFi_TradFi'],           # Green
-    'NYSE (via ICE)': colors['Perm_Chain'],        # Blue
-    'Corda': colors['Perm_Chain'],                 # Blue
-    'Centrifuge': colors['DeFi_TradFi'],           # Green
-    'CME GCUL': colors['DeFi_TradFi'],             # Green
+    'Abaxx (ID++/PDT)': colors['Abaxx'],                # Yellow
+    'LSE DMI': colors['Perm_Chain'],                    # Blue
+    'Deutsche Boerse Seturion': colors['Perm_Chain'],   # Blue
+    'Ondo Finance': colors['DeFi_TradFi'],              # Green
+    'ICE Digital Assets': colors['Perm_Chain'],         # Blue
+    'Securitize': colors['DeFi_TradFi'],                # Green
+    'NYSE (via ICE)': colors['Perm_Chain'],             # Blue
+    'Corda': colors['Perm_Chain'],                      # Blue
+    'Centrifuge': colors['DeFi_TradFi'],                # Green
+    'CME GCUL': colors['DeFi_TradFi'],                  # Green
     'Nasdaq Tokenized Securities': colors['DeFi_TradFi'],  # Green
-    'B3 Digitas/ACXRWA': colors['DeFi_TradFi'],    # Green
-    'Polymesh': colors['Perm_Chain'],              # Blue
-    'Realio Network': colors['DeFi_TradFi'],       # Green
+    'B3 Digitas/ACXRWA': colors['DeFi_TradFi'],         # Green
+    'Polymesh': colors['Perm_Chain'],                   # Blue
+    'Realio Network': colors['DeFi_TradFi'],            # Green
     'TSE/JPX Digital Securities': colors['Trad_Exch'],  # Gray
-    'DTCC Collateral Pilot': colors['Perm_Chain'],  # Blue
-    'SWIFT Blockchain': colors['Perm_Chain'],       # Blue
-    'Ripple (XRP Ledger)': colors['Pub_Chain'],     # Orange
-    'LME Modernization': colors['Trad_Exch'],      # Gray
-    'Solana': colors['Pub_Chain'],                 # Orange
-    'Ethereum': colors['Pub_Chain'],               # Orange
-    'SHFE Initiatives': colors['Trad_Exch'],       # Gray
-    'Kalshi': colors['Pred_Mkt'],                  # Purple
-    'Polymarket': colors['Pred_Mkt'],              # Purple
-    'Crypto.com': colors['Pred_Mkt'],              # Purple
-    'RobinHood': colors['Pred_Mkt'],               # Purple
-    'PredictIt': colors['Pred_Mkt'],               # Purple
-    'Augur': colors['Pub_Chain'],                  # Orange (via Ethereum)
-    'Provenance Foundation': colors['DeFi_TradFi'] # Green
+    'DTCC Collateral Pilot': colors['Perm_Chain'],      # Blue
+    'SWIFT Blockchain': colors['Perm_Chain'],           # Blue
+    'Ripple (XRP Ledger)': colors['Pub_Chain'],         # Orange
+    'LME Modernization': colors['Trad_Exch'],           # Gray
+    'Solana': colors['Pub_Chain'],                      # Orange
+    'Ethereum': colors['Pub_Chain'],                    # Orange
+    'SHFE Initiatives': colors['Trad_Exch'],            # Gray
+    'Kalshi': colors['Pred_Mkt'],                       # Purple
+    'Polymarket': colors['Pred_Mkt'],                   # Purple
+    'Crypto.com': colors['Pred_Mkt'],                   # Purple
+    'RobinHood': colors['Pred_Mkt'],                    # Purple
+    'PredictIt': colors['Pred_Mkt'],                    # Purple
+    'Augur': colors['Pub_Chain'],                       # Orange (via Ethereum)
+    'Provenance Foundation': colors['DeFi_TradFi'],     # Green
+    'Bakkt': colors['DeFi_TradFi'],                     # Green
+    'Tether': colors['DeFi_TradFi'],                    # Green
+    'Circle': colors['DeFi_TradFi']                     # Green
 }
 
 cell_hover_text = {
@@ -190,7 +193,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s retail platform uses encrypted communication for event trading. While secure, it’s less robust for RWAs. US approvals leverage user base, but limited DeFi limits long-term scalability.',
         'PredictIt': 'Medium: PredictIt’s regulated platform uses encrypted communication for political predictions. While secure, it’s less robust for broad RWAs. US approvals provide tailwinds, but focused scope limits vs incumbents.',
         'Augur': 'Medium: Augur’s decentralized blockchain uses encrypted communication for predictions. While secure for DeFi, it lacks robustness for institutional RWAs. US regulatory shift could boost vs incumbents.',
-        'Provenance Foundation': 'Medium: Provenance Foundation\'s Cosmos SDK ensures moderate encrypted P2P communication via secure proof-of-stake, protecting order flow with institutional-grade encryption. While interoperable with 70+ partners, it lacks the advanced federated layers of Abaxx, limiting edge against US pro-tech. Prediction markets like Kalshi face similar constraints, but Provenance\'s focus on compliance balances security for RWA adoption.'
+        'Provenance Foundation': 'Medium: Provenance Foundation\'s Cosmos SDK ensures moderate encrypted P2P communication via secure proof-of-stake, protecting order flow with institutional-grade encryption. While interoperable with 70+ partners, it lacks the advanced federated layers of Abaxx, limiting edge against US pro-tech. Prediction markets like Kalshi face similar constraints, but Provenance\'s focus on compliance balances security for RWA adoption.',
+        'Bakkt': 'Medium: Bakkt\'s API-based P2P for RWA custody is secure with SOC 2, but relies on centralized servers, lacking federated layers like Abaxx. US NYDFS compliance aids trust, but prediction markets like Kalshi\'s on-chain models outpace in decentralization. US pro-tech tailwinds enhance RWA settlement. ',
+        'Tether': 'Medium: Tether\'s USDT APIs enable secure P2P via Hadron, but centralized reserves limit federated robustness like Abaxx. SOC 1 aids trust, though prediction markets like Kalshi\'s on-chain models outpace in decentralization. US adoption enhances RWA settlement. ',
+        'Circle': 'Medium: Circle\'s USDC APIs enable secure P2P via CCTP V2, but centralized custody limits federated robustness like Abaxx. SOC 2 compliance aids trust, though prediction markets like Kalshi\'s on-chain models outpace in decentralization. US pro-tech tailwinds enhance RWA settlement. '
     },
     'DID/Verified Credentials (W3C-Compliant) (High Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s ID++ offers W3C-compliant decentralized identities for verified credentials in RWA markets. This supports regulatory compliance and interoperability, critical for institutional trust and medium-term RWA adoption across global markets. In the context of regulatory competition, this positions Abaxx to leverage Singapore\'s innovation against US incumbents and prediction markets like Kalshi.',
@@ -221,7 +227,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s retail platform offers partial W3C-compliant credentials for verified identities in event trading. While sufficient, it lacks robustness for broad RWAs. US approvals support medium-term adoption.',
         'PredictIt': 'Medium: PredictIt’s regulated platform offers partial W3C-compliant credentials for verified identities in political predictions. While compliant, it lacks robustness for global RWAs. US approvals support medium-term adoption.',
         'Augur': 'Medium: Augur’s decentralized platform offers W3C-compliant credentials for verified identities in predictions. While sufficient for DeFi, it lacks robustness for institutional RWAs. US regulatory shift supports adoption.',
-        'Provenance Foundation': 'High: Provenance Foundation\'s W3C-compliant DIDs and verifiable credentials automate KYC/AML, enhancing trust with $12B+ RWA TVL. Its Cosmos SDK interoperability with 70+ institutions outpaces Solana\'s public model. US pro-tech tailwinds boost adoption, while prediction markets like Polymarket lag in compliance depth, solidifying Provenance\'s RWA leadership.'
+        'Provenance Foundation': 'High: Provenance Foundation\'s W3C-compliant DIDs and verifiable credentials automate KYC/AML, enhancing trust with $12B+ RWA TVL. Its Cosmos SDK interoperability with 70+ institutions outpaces Solana\'s public model. US pro-tech tailwinds boost adoption, while prediction markets like Polymarket lag in compliance depth, solidifying Provenance\'s RWA leadership.',
+        'Bakkt': 'High: Bakkt\'s KYC/AML tools align with W3C for verifiable credentials in RWA custody. Partnerships with ICE ensure interoperability, boosting trust. US BitLicense outpaces EU MiCAR, while prediction markets like Polymarket lag in compliance depth. ',
+        'Tether': 'Medium: Tether\'s KYC via Bitfinex offers partial W3C alignment, but lacks Circle\'s Mint-level compliance. Partnerships with 100+ exchanges aid trust, though NYAG scrutiny moderates. US tailwinds boost vs EU MiCAR, lagging Polymarket in depth. ',
+        'Circle': 'High: Circle\'s KYC/AML via Circle Mint aligns with W3C for verifiable credentials in RWA custody. Partnerships with 70+ institutions ensure interoperability, boosting trust. US BitLicense outpaces EU MiCAR, while prediction markets like Polymarket lag in depth. '
     },
     'Private Ownership with Real-World Legal Finality (MLETR-like) (High Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s PDT embeds MLETR-compliant legal claims for tokenized gold/MMFs, ensuring enforceable ownership. This aligns with Singapore regulations and global sandboxes, critical for institutional trust and medium-term RWA adoption. Amid jurisdictional competition, this positions Abaxx to leverage innovation against US pro-tech shifts and prediction markets.',
@@ -252,7 +261,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s regulated contracts provide partial MLETR alignment for event RWAs, ensuring legal finality. This is sufficient, but lacks robustness for broad RWAs. US approvals support medium-term adoption.',
         'PredictIt': 'Medium: PredictIt’s regulated contracts provide partial MLETR alignment for political RWAs, ensuring legal finality. This is compliant, but lacks robustness for global RWAs. US approvals support medium-term adoption.',
         'Augur': 'Medium: Augur’s decentralized contracts provide partial MLETR alignment for prediction RWAs, ensuring legal finality. This is sufficient for DeFi, but lacks robustness for institutional RWAs. US regulatory shift supports adoption.',
-        'Provenance Foundation': 'High: Provenance Foundation\'s MLETR-aligned smart contracts ensure legal finality for tokenized RWAs like loans, backed by $12B+ TVL. Cosmos IBC with 70+ institutions provides enforceable title, surpassing Ethereum\'s public model. US regulatory tailwinds enhance adoption, outpacing prediction markets like Kalshi in institutional trust for long-term RWA scalability.'
+        'Provenance Foundation': 'High: Provenance Foundation\'s MLETR-aligned smart contracts ensure legal finality for tokenized RWAs like loans, backed by $12B+ TVL. Cosmos IBC with 70+ institutions provides enforceable title, surpassing Ethereum\'s public model. US regulatory tailwinds enhance adoption, outpacing prediction markets like Kalshi in institutional trust for long-term RWA scalability.',
+        'Bakkt': 'High: Bakkt\'s UCC-aligned custody ensures MLETR-like finality for tokenized commodities, redeemable in USDC. ICE\'s regulated framework supports enforceable title, critical for RWAs. US tailwinds challenge EU incumbents, outpacing prediction markets like Kalshi in legal depth. ',
+        'Tether': 'Medium: Tether\'s USDT supports MLETR-like finality for tokenized assets via Paxos, but opaque reserves limit enforceability. $5B RWA collateral aids, though US tailwinds challenge EU incumbents less than Circle. Kalshi lags in legal depth. ',
+        'Circle': 'High: Circle\'s USYC (via Hashnote) ensures MLETR-like finality for tokenized treasuries, redeemable in USDC. $1.3B TVL supports enforceable title, critical for RWAs. US tailwinds challenge EU incumbents, outpacing prediction markets like Kalshi in legal depth. '
     },
     'Private RWA Trading with T+0 Settlement (High Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s Q4 2025 pilots with MineHub enable atomic T+0 settlement for gold/MMFs. This reduces counterparty risk and enhances efficiency, critical for institutional adoption and medium-term competitiveness in commodity markets. In jurisdictional competition, this positions Abaxx against US incumbents and prediction markets like Kalshi.',
@@ -283,7 +295,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s on-chain enables T+0 for events. This is sufficient, but less competitive for broad RWAs. US approvals support medium-term adoption.',
         'PredictIt': 'Medium: PredictIt’s platform enables T+0 for political contracts. This is compliant, but lacks robustness for global RWAs. US approvals support medium-term adoption.',
         'Augur': 'Medium: Augur’s DeFi enables T+0 for predictions. This is sufficient for DeFi, but lacks robustness for institutional RWAs. US regulatory shift supports adoption.',
-        'Provenance Foundation': 'Medium: Provenance Foundation supports T+0 settlement via Cosmos SDK for tokenized RWAs, but lacks the instant atomicity of Ondo\'s JPMorgan integration. With $12B+ TVL, it ensures trust, though US pro-tech tailwinds favor faster systems. Prediction markets like Polymarket face similar limits, balancing Provenance\'s RWA efficiency with institutional needs.'
+        'Provenance Foundation': 'Medium: Provenance Foundation supports T+0 settlement via Cosmos SDK for tokenized RWAs, but lacks the instant atomicity of Ondo\'s JPMorgan integration. With $12B+ TVL, it ensures trust, though US pro-tech tailwinds favor faster systems. Prediction markets like Polymarket face similar limits, balancing Provenance\'s RWA efficiency with institutional needs.',
+        'Bakkt': 'High: Bakkt enables T+0 via Bakkt USD for tokenized assets, reducing risk with Circle integration. This supports institutional trading, leveraging ICE partnerships. US pro-tech boosts vs prediction markets like Polymarket, ensuring medium-term RWA efficiency. ',
+        'Tether': 'High: Tether\'s USDT enables T+0 across blockchains, reducing risk with $50B monthly volume. This supports institutional trading, leveraging exchange integrations. US pro-tech boosts vs prediction markets like Polymarket, ensuring medium-term RWA efficiency. ',
+        'Circle': 'High: Circle\'s USDT enables T+0 across blockchains, reducing risk with $19.4B YTD volume. This supports institutional trading, leveraging exchange integrations. US pro-tech boosts vs prediction markets like Polymarket, ensuring medium-term RWA efficiency. '
     },
     'Cross-Border T+0 for RWAs (Medium Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s Q4 2025 pilots focus on cross-jurisdictional T+0 for commodities via MineHub. This enhances global liquidity, supporting long-term scalability and institutional adoption across markets. In a competitive landscape, this positions Abaxx against US incumbents and prediction markets.',
@@ -314,7 +329,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood\'s US focus limits cross-border T+0 for event RWAs, but approvals aid. This is sufficient, but less robust than global systems, limiting scalability. US approvals support medium-term adoption.',
         'PredictIt': 'Medium: PredictIt\'s US focus limits cross-border T+0 for political RWAs, but approvals aid. This is sufficient, but less robust than global systems, limiting scalability. US approvals support medium-term adoption.',
         'Augur': 'Medium: Augur\'s DeFi supports cross-border T+0 for prediction RWAs. While sufficient, it lacks robustness for global scalability. US regulatory shift supports adoption.',
-        'Provenance Foundation': 'High: Provenance Foundation\'s IBC interoperability enables cross-border T+0 settlement for RWAs, leveraging Cosmos SDK with 70+ institutions. This exceeds Ripple\'s payment focus, supported by US pro-tech tailwinds. Prediction markets like Kalshi lag in cross-jurisdictional reach, enhancing Provenance\'s edge in global RWA scalability.'
+        'Provenance Foundation': 'High: Provenance Foundation\'s IBC interoperability enables cross-border T+0 settlement for RWAs, leveraging Cosmos SDK with 70+ institutions. This exceeds Ripple\'s payment focus, supported by US pro-tech tailwinds. Prediction markets like Kalshi lag in cross-jurisdictional reach, enhancing Provenance\'s edge in global RWA scalability.',
+        'Bakkt': 'Medium: Bakkt\'s API supports cross-border T+0 via ICE\'s global network, but US focus limits MiCA alignment. Partnerships with 70+ institutions aid liquidity, though prediction markets like Kalshi\'s CFTC approvals outpace in speed. ',
+        'Tether': 'High: Tether\'s multi-chain support facilitates cross-border T+0 for USDT in RWAs, with $120B market cap aiding liquidity. US focus limits MiCA, but Sino Global partnerships outpace Kalshi\'s CFTC scope in global reach. ',
+        'Circle': 'High: Circle\'s CCTP V2 facilitates cross-border T+0 for USDC in RWAs, with $55B market cap aiding liquidity. US focus limits MiCA, but XDC/Plume partnerships outpace Kalshi\'s CFTC scope in global reach. '
     },
     'TradFi Integration Friction/Cost (High Impact)': {
         'Abaxx (ID++/PDT)': 'Low: Abaxx’s DLT-agnostic APIs integrate seamlessly with existing trading infrastructure, minimizing disruption. This reduces costs and barriers, critical for medium-term institutional adoption in commodity markets. In jurisdictional competition, this positions Abaxx against US incumbents and prediction markets.',
@@ -345,7 +363,10 @@ cell_hover_text = {
         'RobinHood': 'Low: RobinHood\'s retail platform integrates with low friction for event RWAs. This minimizes costs, critical for medium-term adoption. US approvals support.',
         'PredictIt': 'Low: PredictIt\'s regulated platform integrates with low friction for political RWAs. This minimizes costs, critical for medium-term adoption. US approvals support.',
         'Augur': 'Medium: Augur\'s DeFi platform requires APIs, increasing friction for TradFi integration. This is sufficient for DeFi, but limits institutional adoption. US shift supports.',
-        'Provenance Foundation': 'Low: Provenance Foundation\'s Cosmos SDK reduces TradFi friction with $12B+ RWA TVL and 70+ institutional integrations, but legacy bank interfaces add moderate cost. US pro-tech tailwinds aid, though prediction markets like Polymarket bypass such friction, necessitating Provenance to streamline for competitive RWA adoption.'
+        'Provenance Foundation': 'Low: Provenance Foundation\'s Cosmos SDK reduces TradFi friction with $12B+ RWA TVL and 70+ institutional integrations, but legacy bank interfaces add moderate cost. US pro-tech tailwinds aid, though prediction markets like Polymarket bypass such friction, necessitating Provenance to streamline for competitive RWA adoption.',
+        'Bakkt': 'Low: Bakkt\'s ICE integration minimizes friction for RWA custody, reducing costs with SOC 2 compliance. This outperforms Solana\'s DeFi gaps, leveraging US tailwinds. Prediction markets like Polymarket face higher barriers, positioning Bakkt for institutional adoption. ',
+        'Tether': 'Low: Tether\'s exchange integrations minimize friction for RWA liquidity, with SOC 1 reducing costs. This outperforms Solana\'s DeFi gaps, leveraging US tailwinds. Prediction markets like Polymarket face higher barriers, aiding Tether\'s adoption. ',
+        'Circle': 'Low: Circle\'s Circle Mint minimizes friction for RWA custody, with SOC 2 reducing costs. This outperforms Solana\'s DeFi gaps, leveraging US tailwinds. Prediction markets like Polymarket face higher barriers, aiding Circle\'s adoption. '
     },
     'Centralization vs. Decentralization Balance (Medium Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx\'s federated network balances centralized liquidity for immediate adoption with decentralized DeFi for long-term scalability. This supports mass RWA adoption in DeFi ecosystems. In global competition, this positions Abaxx to leverage Singapore\'s innovation against US incumbents and prediction markets.',
@@ -376,7 +397,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s centralized retail liquidity with limited DeFi balances immediate adoption with constrained openness. This supports long-term scalability for open RWA ecosystems, focusing on US approvals.',
         'PredictIt': 'Medium: PredictIt’s centralized political liquidity with limited DeFi balances immediate adoption with constrained openness. This supports long-term scalability for open RWA ecosystems, focusing on US approvals.',
         'Augur': 'High: Augur’s decentralized prediction liquidity supports long-term scalability for open RWA ecosystems. This balances immediate adoption with openness, critical for DeFi vs incumbents. US shift boosts vs prediction peers.',
-        'Provenance Foundation': 'Medium: Provenance Foundation balances centralization with proof-of-stake governance, supporting 70+ institutions while maintaining decentralization for $12B+ RWA TVL. This aligns with US pro-tech, but lags Solana\'s public model. Prediction markets like Kalshi face similar trade-offs, positioning Provenance for medium-term RWA stability.'
+        'Provenance Foundation': 'Medium: Provenance Foundation balances centralization with proof-of-stake governance, supporting 70+ institutions while maintaining decentralization for $12B+ RWA TVL. This aligns with US pro-tech, but lags Solana\'s public model. Prediction markets like Kalshi face similar trade-offs, positioning Provenance for medium-term RWA stability.',
+        'Bakkt': 'Medium: Bakkt balances centralized custody with DeFi APIs, supporting regulated liquidity but limiting permissionless access. ICE\'s incumbent power aids vs Kalshi, though US pro-tech pressures for openness. ',
+        'Tether': 'Low: Tether\'s centralized reserve model limits decentralization for USDT in RWAs, despite 15+ chain support. ICE\'s power aids vs Kalshi, but US pro-tech pressures for openness, moderating its RWA stability. ',
+        'Circle': 'Medium: Circle balances centralized custody with DeFi APIs for USDC in RWAs, supporting regulated liquidity but limiting permissionless access. ICE\'s power aids vs Kalshi, though US pro-tech pressures for openness. '
     },
     'Privacy for Positions/Flows (Anti-Reverse Engineering) (Medium Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s 5-layer cryptographic system protects trade positions from reverse engineering, ensuring institutional confidentiality in RWA markets. This aligns with wholesale finance needs, supporting medium-term adoption. In global competition, this positions Abaxx against US incumbents and prediction markets like Kalshi.',
@@ -407,7 +431,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood obscures event positions but lacks advanced encryption. This is sufficient, but limits trust for broad RWA adoption. US approvals support.',
         'PredictIt': 'Medium: PredictIt obscures political positions but is less robust than dedicated. This is sufficient, but limits trust for broad RWA adoption. US approvals support.',
         'Augur': 'Medium: Augur’s DeFi privacy obscures prediction positions but is less robust. This is sufficient, but limits trust for institutional RWA adoption. US shift supports.',
-        'Provenance Foundation': 'High: Provenance Foundation\'s privacy-by-design on Cosmos SDK protects positions with encrypted flows, reducing reverse-engineering risks for $12B+ RWA TVL. This outpaces Ethereum\'s public exposure, aided by US pro-tech. Prediction markets like Polymarket face similar threats, but Provenance\'s institutional focus ensures robust RWA security.'
+        'Provenance Foundation': 'High: Provenance Foundation\'s privacy-by-design on Cosmos SDK protects positions with encrypted flows, reducing reverse-engineering risks for $12B+ RWA TVL. This outpaces Ethereum\'s public exposure, aided by US pro-tech. Prediction markets like Polymarket face similar threats, but Provenance\'s institutional focus ensures robust RWA security.',
+        'Bakkt': 'High: Bakkt\'s SOC 2 encryption protects RWA positions from reverse engineering, ensuring confidentiality for $30B+ volume. This outpaces Ethereum\'s public exposure, with US tailwinds enhancing trust vs Polymarket. ',
+        'Tether': 'Medium: Tether\'s SOC 1 encryption protects USDT flows, but opaque reserves moderate privacy. This outpaces Ethereum\'s exposure less than Circle, with US tailwinds aiding vs Polymarket\'s threats. ',
+        'Circle': 'High: Circle\'s SOC 2 encryption protects USDC flows from reverse engineering, ensuring confidentiality for $19.4B volume. This outpaces Ethereum\'s public exposure, with US tailwinds enhancing trust vs Polymarket. '
     },
     'Minimizes Oracles/Bridges Risks (Medium Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s federated design minimizes oracle/bridge risks via native data integration. This reduces vulnerabilities, enhancing reliability for institutional RWA adoption in commodity markets. In global competition, this positions Abaxx against US incumbents and prediction markets.',
@@ -438,7 +465,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s platform relies on limited oracles, introducing some risks. This is sufficient but less reliable than permissioned systems. US approvals support.',
         'PredictIt': 'Medium: PredictIt’s regulated platform relies on limited oracles, introducing some risks. This is sufficient but less reliable than permissioned systems. US approvals support.',
         'Augur': 'Medium: Augur’s DeFi relies on oracles, introducing some risks. This is sufficient but less reliable than permissioned systems. US shift supports.',
-        'Provenance Foundation': 'Medium: Provenance Foundation minimizes oracle/bridge risks with Cosmos IBC, reducing attack vectors for $12B+ RWA TVL. However, multi-chain reliance moderates this edge compared to Corda\'s notary model. US pro-tech tailwinds help, though prediction markets like Kalshi share similar vulnerabilities, balancing Provenance\'s RWA reliability.'
+        'Provenance Foundation': 'Medium: Provenance Foundation minimizes oracle/bridge risks with Cosmos IBC, reducing attack vectors for $12B+ RWA TVL. However, multi-chain reliance moderates this edge compared to Corda\'s notary model. US pro-tech tailwinds help, though prediction markets like Kalshi share similar vulnerabilities, balancing Provenance\'s RWA reliability.',
+        'Bakkt': 'Medium: Bakkt minimizes oracle risks with internal ICE feeds, but Circle bridges add moderate exposure for RWAs. This is sufficient for custody, though Kalshi\'s CFTC model reduces similar vulnerabilities. ',
+        'Tether': 'Medium: Tether minimizes oracle risks with internal feeds for USDT, but multi-chain bridges add moderate exposure for RWAs. This matches Circle\'s custody, though Kalshi\'s CFTC model reduces similar vulnerabilities. ',
+        'Circle': 'Medium: Circle minimizes oracle risks with internal feeds for USDC, but CCTP bridges add moderate exposure for RWAs. This is sufficient for custody, though Kalshi\'s CFTC model reduces similar vulnerabilities. '
     },
     'Liquidity Fragmentation Risk (High Impact)': {
         'Abaxx (ID++/PDT)': 'Low: Abaxx\'s federated network consolidates commodity liquidity across global markets, minimizing fragmentation. This ensures efficient trading, critical for medium-term institutional adoption. In global competition, this positions Abaxx against US incumbents and prediction markets.',
@@ -469,7 +499,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s retail focus risks fragmentation outside US. While sufficient, it’s less unified than global platforms, limiting institutional trading efficiency. US approvals support.',
         'PredictIt': 'Medium: PredictIt’s niche focus risks fragmentation globally. While sufficient, it’s less unified than global platforms, limiting institutional trading efficiency. US approvals support.',
         'Augur': 'Medium: Augur’s DeFi ecosystem risks fragmentation across chains. While sufficient, it’s less unified than permissioned platforms, limiting institutional trading efficiency. US shift supports.',
-        'Provenance Foundation': 'Medium: Provenance Foundation faces moderate liquidity fragmentation with $12B+ RWA TVL across 70+ institutions, but IBC interoperability mitigates splits. US pro-tech aids, though prediction markets like Polymarket pose competitive pressure. This balances Provenance\'s RWA depth against incumbent advantages like CME\'s volumes.'
+        'Provenance Foundation': 'Medium: Provenance Foundation faces moderate liquidity fragmentation with $12B+ RWA TVL across 70+ institutions, but IBC interoperability mitigates splits. US pro-tech aids, though prediction markets like Polymarket pose competitive pressure. This balances Provenance\'s RWA depth against incumbent advantages like CME\'s volumes.',
+        'Bakkt': 'Low: Bakkt\'s ICE network consolidates RWA liquidity, minimizing fragmentation for tokenized commodities. US tailwinds and $500M+ quarterly volume outpace Kalshi, ensuring efficient institutional trading. ',
+        'Tether': 'Low: Tether\'s $120B USDT consolidates RWA liquidity, minimizing fragmentation with $10B+ quarterly volume. US tailwinds outpace Kalshi, ensuring efficient institutional trading across 100+ exchanges. ',
+        'Circle': 'Low: Circle\'s $55B USDC consolidates RWA liquidity, minimizing fragmentation with $500M+ quarterly volume. US tailwinds outpace Kalshi, ensuring efficient institutional trading. '
     },
     'Susceptibility to Malicious Manipulation/Hacking (High Impact)': {
         'Abaxx (ID++/PDT)': 'Low: Abaxx\'s federated blockchain with 5-layer encryption and regular audits minimizes hacking risks. This permissioned design ensures robust security, critical for institutional trust in commodity markets. In a competitive landscape, it leverages Singapore\'s innovation to challenge US incumbents, whose pro-tech tailwinds may enhance their defenses. Prediction markets like Kalshi pose new threats, but Abaxx\'s privacy focus reduces vulnerability to malicious manipulation.',
@@ -500,7 +533,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood\'s platform faces moderate risks from retail exposure. US approvals aid defenses. Limited DeFi increases susceptibility, but challenges prediction markets in RWAs.',
         'PredictIt': 'Medium: PredictIt\'s regulated platform faces moderate risks from focus. US approvals enhance defenses. Scope limits susceptibility, but challenges incumbents in prediction RWAs.',
         'Augur': 'High: Augur\'s DeFi platform faces high risks from decentralized exposure. US shift boosts defenses. Audits mitigate, but high susceptibility challenges incumbents in prediction RWAs.',
-        'Provenance Foundation': 'Medium: Provenance Foundation\'s proof-of-stake minimizes hacking risks with $12B+ RWA TVL, but multi-chain exposure moderates security vs Corda\'s notary model. US pro-tech tailwinds enhance defenses, though prediction markets like Polymarket face similar threats, balancing Provenance\'s RWA resilience.'
+        'Provenance Foundation': 'Medium: Provenance Foundation\'s proof-of-stake minimizes hacking risks with $12B+ RWA TVL, but multi-chain exposure moderates security vs Corda\'s notary model. US pro-tech tailwinds enhance defenses, though prediction markets like Polymarket face similar threats, balancing Provenance\'s RWA resilience.',
+        'Bakkt': 'Low: Bakkt\'s NYDFS-regulated custody with SOC 2 minimizes hacking risks for RWAs, leveraging ICE\'s infrastructure. US pro-tech tailwinds enhance defenses vs Polymarket, reducing vulnerability for $30B+ volume. ',
+        'Tether': 'Medium: Tether\'s CFTC-registered custody with SOC 1 minimizes hacking risks, but reserve opacity adds moderate exposure for RWAs. US pro-tech tailwinds enhance defenses vs Polymarket, reducing vulnerability for $50B volume. ',
+        'Circle': 'Low: Circle\'s BitLicense-regulated custody with SOC 2 minimizes hacking risks for RWAs, leveraging US pro-tech. This reduces vulnerability for $19.4B volume, outpacing Polymarket. '
     },
     'Regulatory Adaptability to Evolving Global Standards (High Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s compliance with Singapore’s MAS framework and MLETR standards enables seamless adaptation to global regulatory shifts like MiCAR and UCC. This flexibility allows quick integration of new rules without architectural changes, critical for institutional scalability. Amid US pro-tech tailwinds challenging EU incumbents, Abaxx leverages its modular design to stay ahead of prediction markets like Kalshi, ensuring long-term RWA compliance without added complexity.',
@@ -531,7 +567,10 @@ cell_hover_text = {
         'RobinHood': 'High: RobinHood’s retail-compliant design enables regulatory adaptation for event RWAs, aligning with global standards like MiCA. This supports trust and scalability, critical for institutional adoption. US approvals boost competitiveness, challenging incumbents and peers in a dynamic landscape.',
         'PredictIt': 'High: PredictIt’s prediction-compliant design enables regulatory adaptation for political RWAs, aligning with global standards like MiCA. This supports trust and scalability, critical for institutional adoption. US approvals boost competitiveness, challenging incumbents and peers in a dynamic landscape.',
         'Augur': 'Medium: Augur’s DeFi-compliant design enables regulatory adaptation for prediction RWAs, but decentralization limits flexibility. This supports trust but lags against MiCA-like changes. Prediction market peers pressure, forcing Augur to enhance modularity to compete, ensuring medium-term RWA compliance in a competitive environment.',
-        'Provenance Foundation': 'High: Provenance Foundation\'s Cosmos SDK-based Layer 1 aligns with MLETR, UCC, and MiCAR standards, enabling seamless adaptation to global regulatory shifts via modular smart contracts and KYC/AML automation. This supports interoperability with 70+ institutions, critical for institutional trust and medium-term RWA adoption. US pro-tech tailwinds enhance its edge over EU incumbents, while prediction markets like Kalshi face similar compliance hurdles.'
+        'Provenance Foundation': 'High: Provenance Foundation\'s Cosmos SDK-based Layer 1 aligns with MLETR, UCC, and MiCAR standards, enabling seamless adaptation to global regulatory shifts via modular smart contracts and KYC/AML automation. This supports interoperability with 70+ institutions, critical for institutional trust and medium-term RWA adoption. US pro-tech tailwinds enhance its edge over EU incumbents, while prediction markets like Kalshi face similar compliance hurdles.',
+        'Bakkt': 'High: Bakkt\'s NYDFS BitLicense and CFTC alignment enable rapid adaptation to UCC/MiCA, with modular custody for RWAs. US pro-tech tailwinds outpace EU, though prediction markets like Kalshi\'s CFTC approvals add competition. ',
+        'Tether': 'Medium: Tether\'s CFTC registration and Hadron platform enable moderate adaptation to UCC/MiCA, but opacity issues limit modular upgrades. US pro-tech aids, though Kalshi\'s approvals challenge its compliance edge. ',
+        'Circle': 'High: Circle\'s BitLicense and UCC alignment enable rapid adaptation to MiCA/SEC, with CCTP V2 for RWAs. US pro-tech tailwinds outpace EU, though Kalshi\'s CFTC approvals add competition. '
     },
     'Likelihood of Long Term Open Protocol-based DeFi (Medium Impact)': {
         'Abaxx (ID++/PDT)': 'High: Abaxx’s federated model incorporates open protocol elements for DeFi, supporting long-term scalability in RWA markets. This leverages Singapore’s innovation to compete with US incumbents and prediction markets, ensuring composability and community governance for sustainable adoption.',
@@ -562,7 +601,10 @@ cell_hover_text = {
         'RobinHood': 'Medium: RobinHood’s retail infrastructure limits open protocol development, constraining long-term DeFi scalability. US approvals aid but lag prediction market peers, requiring upgrades for relevance in evolving RWA ecosystems.',
         'PredictIt': 'Medium: PredictIt’s focused infrastructure limits open protocol development, constraining long-term DeFi scalability. US approvals aid but lag prediction market peers, requiring upgrades for relevance in evolving RWA ecosystems.',
         'Augur': 'High: Augur’s decentralized infrastructure supports open protocol-based DeFi, enabling long-term scalability for RWAs. This leverages US regulatory tailwinds to challenge incumbents and prediction market peers, with composable smart contracts ensuring sustainable institutional adoption.',
-        'Provenance Foundation': 'High: Provenance Foundation\'s proof-of-stake network and IBC interoperability support open protocol-based DeFi, enabling composable smart contracts for tokenized RWAs like loans and insurance. With $12B+ RWA TVL and regulatory-compliant governance, it fosters long-term scalability and community-driven upgrades. US pro-tech tailwinds challenge incumbents, aligning with prediction markets like Polymarket, but Provenance\'s enterprise-grade security ensures sustainable institutional integration.'
+        'Provenance Foundation': 'High: Provenance Foundation\'s proof-of-stake network and IBC interoperability support open protocol-based DeFi, enabling composable smart contracts for tokenized RWAs like loans and insurance. With $12B+ RWA TVL and regulatory-compliant governance, it fosters long-term scalability and community-driven upgrades. US pro-tech tailwinds challenge incumbents, aligning with prediction markets like Polymarket, but Provenance\'s enterprise-grade security ensures sustainable institutional integration.',
+        'Bakkt': 'Medium: Bakkt\'s API ecosystem supports moderate open DeFi for USDC in RWAs, but centralized custody limits permissionless growth. US tailwinds aid vs Polymarket, balancing institutional scalability. ',
+        'Tether': 'Medium: Tether\'s USDT supports moderate open DeFi for RWAs, but centralized reserves limit permissionless growth. US tailwinds aid vs Polymarket, balancing institutional scalability with adoption risks. ',
+        'Circle': 'Medium: Circle\'s USDC supports moderate open DeFi protocols for RWAs, but centralized custody limits permissionless growth. US tailwinds aid vs Polymarket, balancing institutional scalability. '
     },
     'Incumbent Advantages (High Impact)': {
         'Abaxx (ID++/PDT)': 'Medium: Abaxx benefits from Singapore’s commodity hub, easing RWA onboarding but lacking US incumbent volumes. This balances innovation with market power, challenging US tailwinds and prediction markets like Kalshi in global competition.',
@@ -593,7 +635,10 @@ cell_hover_text = {
         'RobinHood': 'High: RobinHood’s user base aids retail onboarding. US approvals enhance incumbent advantages, but limited DeFi lags vs prediction market peers.',
         'PredictIt': 'Medium: PredictIt lacks broad volumes but aids political onboarding. US approvals provide tailwinds, but scope limits vs incumbent RWA scalability.',
         'Augur': 'Low: Augur lacks incumbent power, focusing on DeFi onboarding. US shift could boost vs incumbents, challenging traditional barriers with prediction markets.',
-        'Provenance Foundation': 'Medium: Provenance Foundation leverages $12B+ RWA TVL and partnerships with 70+ institutions for efficient onboarding, but lacks the massive volumes of US incumbents like CME. Its Cosmos SDK infrastructure aids secure tokenization, balancing innovation with market power. US pro-tech tailwinds boost its edge over EU players, while prediction markets like Kalshi pose disruption through niche liquidity.'
+        'Provenance Foundation': 'Medium: Provenance Foundation leverages $12B+ RWA TVL and partnerships with 70+ institutions for efficient onboarding, but lacks the massive volumes of US incumbents like CME. Its Cosmos SDK infrastructure aids secure tokenization, balancing innovation with market power. US pro-tech tailwinds boost its edge over EU players, while prediction markets like Kalshi pose disruption through niche liquidity.',
+        'Bakkt': 'High: Bakkt leverages ICE\'s $30B+ volume and global partnerships for RWA onboarding, providing incumbent edge over greenfield players. US pro-tech tailwinds resist Kalshi, ensuring leadership in tokenized commodities. ',
+        'Tether': 'High: Tether leverages $120B market cap and 100+ exchange partnerships for RWA onboarding, providing incumbent edge over greenfield players. US pro-tech tailwinds resist Kalshi, ensuring leadership in tokenized liquidity. ',
+        'Circle': 'High: Circle leverages $55B USDC market cap and ICE partnerships for RWA onboarding, providing incumbent edge over greenfield players. US pro-tech tailwinds resist Kalshi, ensuring leadership in tokenized commodities. '
     },
     'Regulatory Tailwinds (High Impact)': {
         'Abaxx (ID++/PDT)': 'High: Singapore’s MAS innovation sandbox and MLETR support provide strong regulatory tailwinds for Abaxx’s RWA growth. This competes with US pro-tech, accelerating adoption against EU MiCA and prediction markets like Kalshi, enhancing global scalability.',
@@ -624,7 +669,10 @@ cell_hover_text = {
         'RobinHood': 'High: US SEC approvals and pro-tech tailwinds provide strong regulatory support for RobinHood’s prediction tokenization. This accelerates adoption against EU MiCA, boosting scalability against incumbent barriers.',
         'PredictIt': 'High: US CFTC approvals and pro-tech tailwinds provide strong regulatory support for PredictIt’s prediction tokenization. This accelerates adoption against EU MiCA, boosting scalability against incumbent barriers.',
         'Augur': 'Medium: US pro-tech tailwinds and Augur’s DeFi ecosystem provide moderate regulatory support for prediction tokenization. This accelerates adoption against EU MiCA, but decentralized scrutiny limits momentum.',
-        'Provenance Foundation': 'High: Provenance Foundation benefits from US pro-tech tailwinds, including SEC pilots and UCC alignment for tokenized financial services. Its Cosmos-based compliance (KYC/AML automation, MLETR support) accelerates RWA adoption, competing with EU MiCAR. With $30B+ in transactions, this regulatory momentum outpaces prediction markets like Polymarket, fostering secure interoperability and institutional scaling in a competitive landscape.'
+        'Provenance Foundation': 'High: Provenance Foundation benefits from US pro-tech tailwinds, including SEC pilots and UCC alignment for tokenized financial services. Its Cosmos-based compliance (KYC/AML automation, MLETR support) accelerates RWA adoption, competing with EU MiCAR. With $30B+ in transactions, this regulatory momentum outpaces prediction markets like Polymarket, fostering secure interoperability and institutional scaling in a competitive landscape.',
+        'Bakkt': 'High: Bakkt benefits from US pro-tech tailwinds and CFTC approvals, accelerating RWA custody adoption. This outpaces EU MiCAR, with ICE\'s infrastructure boosting scalability vs Polymarket. ',
+        'Tether': 'High: Tether benefits from US pro-tech tailwinds and CFTC registration, accelerating RWA liquidity adoption. This outpaces EU MiCAR, with scale boosting vs Polymarket despite scrutiny. ',
+        'Circle': 'High: Circle benefits from US pro-tech tailwinds and CFTC approvals, accelerating RWA custody adoption. This outpaces EU MiCAR, with ICE\'s infrastructure boosting scalability vs Polymarket. '
     }
 }
 
@@ -658,7 +706,10 @@ points_breakdown = {
     'RobinHood': 'Total: 44.0. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (Medium, 2 × 2 = 4), Legal Finality (Medium, 2 × 2 = 4), T+0 Trading (Medium, 2 × 2 = 4), Cross-Border T+0 (Medium, 2 × 1.5 = 3), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Medium, 2 × 1.5 = 3), Privacy (Medium, 2 × 1.5 = 3), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Medium, 2 × 2 = 4 inverted), Hacking (Medium, 2 × 2 = 4 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (Medium, 2 × 2.5 = 5), Incumbent Advantages (High, 3 × 2 = 6), Regulatory Tailwinds (High, 3 × 2 = 6).',
     'PredictIt': 'Total: 43.0. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (Medium, 2 × 2 = 4), Legal Finality (Medium, 2 × 2 = 4), T+0 Trading (Medium, 2 × 2 = 4), Cross-Border T+0 (Medium, 2 × 1.5 = 3), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Medium, 2 × 1.5 = 3), Privacy (Medium, 2 × 1.5 = 3), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Medium, 2 × 2 = 4 inverted), Hacking (Medium, 2 × 2 = 4 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (Medium, 2 × 2.5 = 5), Incumbent Advantages (Medium, 2 × 2 = 4), Regulatory Tailwinds (High, 3 × 2 = 6).',
     'Augur': 'Total: 42.0. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (Medium, 2 × 2 = 4), Legal Finality (Medium, 2 × 2 = 4), T+0 Trading (Medium, 2 × 2 = 4), Cross-Border T+0 (Medium, 2 × 1.5 = 3), TradFi Friction (Medium, 2 × 2 = 4 inverted), Centralization Balance (High, 3 × 1.5 = 4.5), Privacy (Medium, 2 × 1.5 = 3), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Medium, 2 × 2 = 4 inverted), Hacking (High, 1 × 2 = 2 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (High, 3 × 2.5 = 7.5), Incumbent Advantages (Low, 1 × 2 = 2), Regulatory Tailwinds (High, 3 × 2 = 6).',
-    'Provenance Foundation': 'Total: 46.5. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (High, 3 × 2 = 6), Legal Finality (High, 3 × 2 = 6), T+0 Trading (Medium, 2 × 2 = 4), Cross-Border T+0 (High, 3 × 1.5 = 4.5), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Medium, 2 × 1.5 = 3), Privacy (High, 3 × 1.5 = 4.5), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Medium, 2 × 2 = 4 inverted), Hacking (Medium, 2 × 2 = 4 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (High, 3 × 2.5 = 7.5), Incumbent Advantages (Medium, 2 × 2 = 4), Regulatory Tailwinds (High, 3 × 2 = 6).'
+    'Provenance Foundation': 'Total: 46.5. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (High, 3 × 2 = 6), Legal Finality (High, 3 × 2 = 6), T+0 Trading (Medium, 2 × 2 = 4), Cross-Border T+0 (High, 3 × 1.5 = 4.5), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Medium, 2 × 1.5 = 3), Privacy (High, 3 × 1.5 = 4.5), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Medium, 2 × 2 = 4 inverted), Hacking (Medium, 2 × 2 = 4 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (High, 3 × 2.5 = 7.5), Incumbent Advantages (Medium, 2 × 2 = 4), Regulatory Tailwinds (High, 3 × 2 = 6).',
+    'Bakkt': 'Total: 48.0. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (High, 3 × 2 = 6), Legal Finality (High, 3 × 2 = 6), T+0 Trading (High, 3 × 2 = 6), Cross-Border T+0 (Medium, 2 × 1.5 = 3), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Medium, 2 × 1.5 = 3), Privacy (High, 3 × 1.5 = 4.5), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Low, 3 × 2 = 6 inverted), Hacking (Low, 3 × 2 = 6 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (Medium, 2 × 2.5 = 5), Incumbent Advantages (High, 3 × 2 = 6), Regulatory Tailwinds (High, 3 × 2 = 6).',
+    'Tether': 'Total: 50.0. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (Medium, 2 × 2 = 4), Legal Finality (Medium, 2 × 2 = 4), T+0 Trading (High, 3 × 2 = 6), Cross-Border T+0 (High, 3 × 1.5 = 4.5), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Low, 1 × 1.5 = 1.5), Privacy (Medium, 2 × 1.5 = 3), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Low, 3 × 2 = 6 inverted), Hacking (Medium, 2 × 2 = 4 inverted), Regulatory Adaptability (Medium, 2 × 2 = 4), DeFi Potential (Medium, 2 × 2.5 = 5), Incumbent Advantages (High, 3 × 2 = 6), Regulatory Tailwinds (High, 3 × 2 = 6).',
+    'Circle': 'Total: 51.0. Breakdown: Encrypted P2P (Medium, 2 × 2 = 4), DID/Verified (High, 3 × 2 = 6), Legal Finality (High, 3 × 2 = 6), T+0 Trading (High, 3 × 2 = 6), Cross-Border T+0 (High, 3 × 1.5 = 4.5), TradFi Friction (Low, 3 × 2 = 6 inverted), Centralization Balance (Medium, 2 × 1.5 = 3), Privacy (High, 3 × 1.5 = 4.5), Oracles/Bridges (Medium, 2 × 1.5 = 3), Liquidity Fragmentation (Low, 3 × 2 = 6 inverted), Hacking (Low, 3 × 2 = 6 inverted), Regulatory Adaptability (High, 3 × 2 = 6), DeFi Potential (Medium, 2 × 2.5 = 5), Incumbent Advantages (High, 3 × 2 = 6), Regulatory Tailwinds (High, 3 × 2 = 6).'
 }
 
 solution_descriptions = {
@@ -690,7 +741,10 @@ solution_descriptions = {
     'RobinHood': 'RobinHood offers regulated event RWA trading with T+0 settlement, leveraging its retail user base for US market integration.',
     'PredictIt': 'PredictIt is a US-regulated platform for political prediction RWAs, providing T+0 settlement with a focus on compliance and niche markets.',
     'Augur': 'Augur is a decentralized prediction market on Ethereum, offering T+0 settlement for RWAs with a focus on long-term DeFi potential.',
-    'Provenance Foundation': 'Provenance Foundation is a US-based public proof-of-stake blockchain (Layer 1 on Cosmos SDK) designed for financial services and RWA tokenization. It supports secure issuance of tokenized assets like loans, private credit, and insurance products, with $12B+ in RWA TVL and $30B+ in transactions. Featuring the Marker module for compliant tokens and interoperability with 70+ institutions, it enables efficient tokenization, trading, and compliance for institutional scaling.'
+    'Provenance Foundation': 'Provenance Foundation is a US-based public proof-of-stake blockchain (Layer 1 on Cosmos SDK) designed for financial services and RWA tokenization. It supports secure issuance of tokenized assets like loans, private credit, and insurance products, with $12B+ in RWA TVL and $30B+ in transactions. Featuring the Marker module for compliant tokens and interoperability with 70+ institutions, it enables efficient tokenization, trading, and compliance for institutional scaling.',
+    'Bakkt': 'Bakkt, owned by ICE, is a US-regulated digital asset infrastructure provider for RWA tokenization, offering custody, trading, and onramp services with $30B+ transaction volume. It integrates with Circle for USDC settlements and focuses on tokenized commodities and equities for institutional scaling.',
+    'Tether': 'Tether, issuer of $120B USDT, launched Hadron in 2024 for RWA tokenization, enabling mass-market asset tokenization with partnerships like UAE real estate. It provides scale for settlements but faces opacity issues, bridging TradFi with DeFi liquidity.',
+    'Circle': 'Circle, issuer of $55B USDC, acquired Hashnote for $1.3B USYC tokenized treasuries and launched Circle Gateway for cross-chain RWA settlements. It focuses on compliant liquidity with CCTP V2, integrating with 70+ institutions for tokenized yields and payments.'
 }
 
 # Full tooltip_data
