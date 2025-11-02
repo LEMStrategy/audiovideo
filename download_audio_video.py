@@ -19,13 +19,15 @@ download_type = input("Enter choice (1 or 2): ").strip()
 #
 file_system = os.name
 if file_system == "posix" or file_system == "darwin" or file_system == "linux" :
+    path_break = '/'
     if download_type == '1':
         SAVE_PATH = Path('/~/Downloads/Audio/Youtube_Downloads/') # Output directory)
     else:
         SAVE_PATH = Path('/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
 elif file_system == "nt" or file_system == "win32" or file_system == "win64" :
+    path_break = '\\'
     if download_type == '1':
-        SAVE_PATH = Path('C:/C_Temp/Media/Youtube_Downloads') # Output directory)
+        SAVE_PATH = Path('C:/C_Temp/Media/Youtube_Downloads/') # Output directory)
     else:
         SAVE_PATH = Path('K:/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
 else:
@@ -132,9 +134,9 @@ def download_playlist(playlist_url, output_type, save_path, start_index=1):
     if start_index > total_videos:
         print(f"Start index {start_index} is greater than playlist size ({total_videos}). Setting to 1.")
         start_index = 1
-    save_path = save_path + sanitize_path_element(title) +"/"
+    save_path = save_path / sanitize_path_element(title)
     ydl_opts = {
-        'outtmpl': f'{save_path}%(playlist_index)02d - %(title)s.%(ext)s',
+        'outtmpl': f'{save_path}{path_break}%(playlist_index)02d - %(title)s.%(ext)s',
         'noplaylist': False,
         'playlist_items': f"{start_index}-",
         'ignoreerrors': True,
