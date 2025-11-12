@@ -90,7 +90,7 @@ def get_playlist_info(playlist_url):
 def download_single_video(video_url, output_type, save_path):
     """Download a single YouTube video as video (MP4) or audio (MP3)."""
     ydl_opts = {
-        'outtmpl': f'{save_path}%(title)s.%(ext)s',
+        'outtmpl': f'{save_path}{path_break}%(title)s.%(ext)s',
         'noplaylist': True,
         'ignoreerrors': True,
         'verbose': VERBOSE,
@@ -116,7 +116,7 @@ def download_single_video(video_url, output_type, save_path):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         try:
             ydl.download([video_url])
-            print(f"Downloaded: {video_url} to {SAVE_PATH}")
+            print(f"Downloaded: {video_url} to {save_path}")
         except Exception as e:
             print(f"Error downloading {video_url}: {e}")
 
