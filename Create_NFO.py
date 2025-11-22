@@ -225,7 +225,7 @@ def download_poster(poster_path, save_dir):
     poster_url = f"{base_url}{poster_path}"
     image_ext = Path(poster_path).suffix
     poster_name = "poster"+image_ext
-    poster_file = save_dir / poster_name
+    poster_file = os.path.expanduser(save_dir / poster_name)
 
     # Download the image
     try:
@@ -241,7 +241,7 @@ def download_poster(poster_path, save_dir):
         return None
 
 
-def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=None, show=None, details=None):
+def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=None, show=None, details=None, save_poster=False):
     """Fetch TV show metadata from TMDb."""
     if not(show and details):
         search_results = tv.search(series_name)['results']
@@ -266,6 +266,8 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
             response = input("ENTER THE CORRECT SHOW # FOR {}: : ".format(series_name))
             if int(response) in range(len(search_results)):
                     show = search_results[int(response)]
+                    show_id = show["id"]
+                    details = tv.details(show_id)
             else:
                 metadata = {
                     "title": str(series_name),
@@ -275,9 +277,9 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
                     "studio": "No Studio Data",
                 }
                 print ("ERROR: no metadata in TMDB for {}.".format(series_name))
-                return metadata
+                return metadata, None, None
         #
-    if show.poster_path:
+    if show.poster_path and save_poster:
         download_poster(show.poster_path, series_path)
     #
     show_id = show["id"]
@@ -578,12 +580,12 @@ def extract_season_episode(file_path: Path) -> tuple[int, int] | None:
         return int(match.group(1)), int(match.group(2))
     return None
 
-def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="movie", series_name=None):
+def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="movie", series_name=None, show=None, details=None):
     #
     if do_subdirectories:
         directory_list = [item for item in directory.iterdir() if item.is_dir()]
         for subdir in directory_list:
-            do_nfos(directory = subdir, do_subdirectories=do_subdirectories, replace_nfos=replace_nfos, nfo_type=nfo_type, series_name=series_name)
+            do_nfos(directory = subdir, do_subdirectories=do_subdirectories, replace_nfos=replace_nfos, nfo_type=nfo_type, series_name=series_name, show=show, details=details)
     #
     mp4_video_files = []
     mkv_video_files = []
@@ -601,8 +603,8 @@ def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="mo
     #
     for video in mp4_video_files:
         get_nfo( m4v_file=video, overwrite=replace_nfos, nfo_type=nfo_type, series_name=series_name)
-    show = None
-    details = None
+    # show = None
+    # details = None
     for video in mkv_video_files:
         if nfo_type == 'episodedetails':
             season_num, episode_num = extract_season_episode(video)
@@ -638,16 +640,18 @@ def find_directories_without_nfo_art(directory_list):
 
 def do_series_nfos(dir_list, replace_nfos=True):
     for showdir in dir_list:
+        show = None
+        details = None
         series_name = showdir.name
         file_name = 'tvshow.nfo' #  showdir.name+".nfo"
         output_file = showdir / file_name
         if output_file.exists() and replace_nfos==False:
             pass
         else:
-            metadata, _, _ = fetch_tv_metadata(series_name, showdir)
+            metadata, show, details = fetch_tv_metadata(series_name, showdir, save_poster=True)
             create_nfo(metadata, output_file, overwrite=replace_nfos, nfo_type='tvshow')
         nfo_type = 'episodedetails'
-        do_nfos(directory=showdir, do_subdirectories=True, replace_nfos=replace_nfos, nfo_type=nfo_type, series_name=series_name)
+        do_nfos(directory=showdir, do_subdirectories=True, replace_nfos=replace_nfos, nfo_type=nfo_type, series_name=series_name, show=show, details=details)
     return
 
 

@@ -21,7 +21,7 @@ file_system = os.name
 if file_system == "posix" or file_system == "darwin" or file_system == "linux" :
     path_break = '/'
     if download_type == '1':
-        SAVE_PATH = Path('/~/Downloads/Audio/Youtube_Downloads/') # Output directory)
+        SAVE_PATH = Path('~/Downloads/Audio/Youtube_Downloads/') # Output directory)
     else:
         SAVE_PATH = Path('/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
 elif file_system == "nt" or file_system == "win32" or file_system == "win64" :
