@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Spyder  Editor
+Spyder   Editor
 """
 
 import yt_dlp
@@ -29,7 +29,7 @@ elif file_system == "nt" or file_system == "win32" or file_system == "win64" :
     if download_type == '1':
         SAVE_PATH = Path('C:/C_Temp/Media/Youtube_Downloads/') # Output directory)
     else:
-        SAVE_PATH = Path('K:/mnt/Media/Digital/Audio/Youtube_Downloads/') # Output directory)
+        SAVE_PATH = Path('K:/Digital/Audio/Youtube_Downloads/') # Output directory)
 else:
     print("Error: Unknown OS/Download Typ Combo ={} and {}>".format(file_system, download_type))
     sys.exit(1)
