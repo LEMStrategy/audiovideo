@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
+Spyder  Editor
 """
 
 import yt_dlp
