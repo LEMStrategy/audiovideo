@@ -254,7 +254,7 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
                 "studio": "No Studio Data",
             }
             print ("ERROR: no metadata in TMDB for {}.".format(series_name))
-            return metadata
+            return metadata, None, None
         #
         if len(search_results) == 1:
             show = search_results[0]  # Take the first match
@@ -276,7 +276,7 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
                     "genre": "Sui Generis",
                     "studio": "No Studio Data",
                 }
-                print ("ERROR: no metadata in TMDB for {}.".format(series_name))
+                print ("ERROR: invalid Show Number Response for {}.".format(series_name))
                 return metadata, None, None
         #
     if show.poster_path and save_poster:
