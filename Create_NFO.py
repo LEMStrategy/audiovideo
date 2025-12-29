@@ -469,6 +469,10 @@ def create_nfo(metadata, output_file, overwrite=True, nfo_type='movie'):
                     ET.SubElement(actor, "role").text = ""
                     ET.SubElement(actor, "order").text = ""
                     ET.SubElement(actor, "thumb").text = ""
+            elif key == 'genre':
+                    for genre in value:
+                        # print ('Found GENRE ={}'.format(genre))
+                        ET.SubElement(root, key).text = str(genre)
             else:
                 for item in value:
                     ET.SubElement(root, key).text = str(item)
