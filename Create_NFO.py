@@ -196,8 +196,14 @@ def extract_artwork(m4v_file, title, overwrite_artwork=True,  nfo_type="movie"):
         if poster.exists():
             suff = poster.suffix
             if  nfo_type=="movie":
+                new_file = m4v_file.with_stem(title+"-poster").with_suffix(suff)
+                if new_file.exists():
+                    new_file.unlink()
                 poster = poster.rename(m4v_file.with_stem(title+"-poster").with_suffix(suff)).name
             elif nfo_type=="episodedetails":
+                new_file = m4v_file.with_stem(title+"-thumb").with_suffix(suff)
+                if new_file.exists():
+                    new_file.unlink()
                 poster = poster.rename(m4v_file.with_stem(title+"-thumb").with_suffix(suff)).name
         else:
             poster = None
@@ -415,6 +421,7 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
                                aired=aired,
                                thumb=thumb
                                )
+    # print(metadata)
     return metadata, poster, fanart, thumb
 
 def _build_metadata(title, nfo_type, m4v_file, overwrite, **kwargs):
@@ -445,7 +452,6 @@ def _build_metadata(title, nfo_type, m4v_file, overwrite, **kwargs):
             'aired': kwargs.get('aired')
         })
     return base_metadata
-
 
 
 
