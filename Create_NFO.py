@@ -249,7 +249,7 @@ def download_poster(poster_path, save_dir):
 
 def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=None, show=None, details=None, save_poster=False):
     """Fetch TV show metadata from TMDb."""
-    if not(show and details):
+    if not(show):
         search_results = tv.search(series_name)['results']
         if len(search_results) == 0:
             metadata = {
@@ -258,12 +258,15 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
                 "mpaa": "NR",
                 "genre": "Sui Generis",
                 "studio": "No Studio Data",
+                "season": "0",
+                "episode": "0",
+                "no_data": True
             }
             print ("ERROR: no metadata in TMDB for {}.".format(series_name))
             return metadata, None, None
         #
         if len(search_results) == 1:
-            show = search_results[0]  # Take the first match
+            show = search_results[0]  # Take the only match
         else:
             print("Multiple SHows found for the Series Name={}, Select the correct one:\n".format(series_name))
             for showindex in range(len(search_results)):
@@ -281,6 +284,9 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
                     "mpaa": "NR",
                     "genre": "Sui Generis",
                     "studio": "No Studio Data",
+                    "season": "0",
+                    "episode": "0",
+                    "no_data": True
                 }
                 print ("ERROR: invalid Show Number Response for {}.".format(series_name))
                 return metadata, None, None
@@ -290,7 +296,7 @@ def fetch_tv_metadata(series_name, series_path, season_num=None, episode_num=Non
     #
     show_id = show["id"]
     details = tv.details(show_id)
-
+    #
     metadata = {
         "title": details["name"],
         "plot": details["overview"],
@@ -339,6 +345,7 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
     poster = None
     fanart = None
     thumb = None
+    no_data = False
 
     try:
         media_info = MediaInfo.parse(m4v_file)
@@ -402,8 +409,10 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
     if not title:
         print(f"-------> extract_metadata: ERROR, {nfo_type}={m4v_file.stem} has NO TITLE, using filename.")
         title = str(m4v_file.stem)
+        no_data = True
     if nfo_type == "episodedetails" and not showtitle:
         showtitle = title
+        no_data = True
 
     # Extract artwork
     poster, fanart = extract_artwork(m4v_file, str(m4v_file.stem), overwrite_artwork=overwrite,  nfo_type=nfo_type)
@@ -419,7 +428,8 @@ def extract_metadata(m4v_file, overwrite=True, nfo_type="movie", series_name=Non
                                season=season,
                                episode=episode,
                                aired=aired,
-                               thumb=thumb
+                               thumb=thumb,
+                               no_data=no_data
                                )
     # print(metadata)
     return metadata, poster, fanart, thumb
@@ -442,7 +452,8 @@ def _build_metadata(title, nfo_type, m4v_file, overwrite, **kwargs):
         'language': kwargs.get('language', []),
         'subtitles': kwargs.get('subtitles', []),
         'poster': str(kwargs.get('poster', '')),
-        'fanart': str(kwargs.get('fanart', ''))
+        'fanart': str(kwargs.get('fanart', '')),
+        'no_data': kwargs.get('no_data')
     }
     if nfo_type == "episodedetails":
         base_metadata.update({
@@ -541,7 +552,7 @@ def rename_for_kodi(m4v_file, season, episode):
     print(f"Renamed {current_name} to {new_name}")
     return new_path
 
-def get_nfo (m4v_file, overwrite=True, nfo_type='movie', series_name=None):
+def get_nfo (m4v_file, overwrite=True, nfo_type='movie', series_name=None, show=None):
     #
     m4v_file = Path(m4v_file)
     #
@@ -558,6 +569,15 @@ def get_nfo (m4v_file, overwrite=True, nfo_type='movie', series_name=None):
         return(error_msg)
     # Extract metadata
     metadata, poster, fanart, thumb = extract_metadata(m4v_file, overwrite=overwrite, nfo_type=nfo_type, series_name=series_name)
+    if metadata['no_data'] == True:
+        if nfo_type== "episodedetails":
+            season_num, episode_num = extract_season_episode(m4v_file)
+            metadata, show, details = fetch_tv_metadata(series_name, series_path=m4v_file.parent, season_num=season_num, episode_num=episode_num, show=show, details=None, save_poster=True)
+        elif nfo_type =='movie':
+            pass
+        else:
+            pass
+    #
     # Create NFO file name
     if nfo_type == "episodedetails":
         season  = metadata['season'] or "0"
@@ -612,7 +632,7 @@ def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="mo
         print("Directory={} is invalid.".format(directory))
     #
     for video in mp4_video_files:
-        get_nfo( m4v_file=video, overwrite=replace_nfos, nfo_type=nfo_type, series_name=series_name)
+        get_nfo( m4v_file=video, overwrite=replace_nfos, nfo_type=nfo_type, series_name=series_name, show=show)
     # show = None
     # details = None
     for video in mkv_video_files:
