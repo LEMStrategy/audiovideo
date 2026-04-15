@@ -9,6 +9,8 @@ import re
 import sys
 import os
 
+VERBOSE = False  # Set to True for detailed logging
+
 # Configuration
 #
 # Query Local/NAS Save
@@ -34,7 +36,6 @@ else:
     print("Error: Unknown OS/Download Typ Combo ={} and {}>".format(file_system, download_type))
     sys.exit(1)
 #
-VERBOSE = True  # Set to True for detailed logging
 
 def sanitize_path_element(name: str) -> str:
     """
@@ -195,10 +196,10 @@ def main():
 
     # Get URL and download
     if download_source == '1':
-        url = input("\nEnter the YouTube VIDEO URL: ").strip()
+        url = input("\nEnter the YouTube {} URL: ".format(output_type.upper())).strip()
         download_single_video(url, output_type, SAVE_PATH)
     else:  # download_source == '2'
-        url = input("\nEnter the YouTube PLAYLIST URL: ").strip()
+        url = input("\nEnter the YouTube {} PLAYLIST URL: ".format(output_type.upper())).strip()
         start_index = input("Enter start index (default 1): ").strip()
         start_index = int(start_index) if start_index.isdigit() else 1
         download_playlist(url, output_type, SAVE_PATH, start_index)
