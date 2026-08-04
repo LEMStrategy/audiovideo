@@ -9,7 +9,7 @@ import re
 import sys
 import os
 
-VERBOSE = False  # Set to True for detailed logging
+VERBOSE = True  # Set to True for detailed logging
 
 # Configuration
 #

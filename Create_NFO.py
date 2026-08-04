@@ -520,6 +520,13 @@ def is_mkv(mkv_file):
         return True
     return False
 
+def is_avi(avi_file):
+    #
+    avi_file= Path(avi_file)
+    if avi_file.suffix =='.avi' or avi_file.suffix =='.AVI':
+        return True
+    return False
+
 
 def is_kodi_compliant(filename, season, episode):
     """Check if filename ends with SxxExx and matches given season/episode."""
@@ -610,6 +617,24 @@ def extract_season_episode(file_path: Path) -> tuple[int, int] | None:
         return int(match.group(1)), int(match.group(2))
     return None
 
+
+def do_avi_mkv(video, nfo_type, series_name, directory, show, details):
+    if nfo_type == 'episodedetails':
+        season_num, episode_num = extract_season_episode(video)
+        if season_num and episode_num:
+            metadata, show, details = fetch_tv_metadata(series_name=series_name, series_path=directory, season_num=season_num, episode_num=episode_num, show=show, details=details)
+            nfo_file = video.with_suffix('.nfo')
+            if nfo_file.exists() and replace_nfos==False:
+                # print("NFO file ={} already exists and overwrite={}".format(nfo_file, overwrite))
+                return
+            # Create NFO file
+            create_nfo(metadata, nfo_file, overwrite=replace_nfos, nfo_type=nfo_type)
+        else:
+            print("Invalid Season/Episode data={}/{} for show={} in filename={}".format(season_num, episode_num, series_name, video))
+    else:
+        print("Invalid nfo_type={} for for MKV filename={}".format(nfo_type, video))
+    return
+
 def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="movie", series_name=None, show=None, details=None):
     #
     if do_subdirectories:
@@ -628,6 +653,7 @@ def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="mo
         else:  # Extract videos
             mp4_video_files = [item for item in directory.iterdir() if is_mp4(item)]
             mkv_video_files = [item for item in directory.iterdir() if is_mkv(item)]
+            avi_video_files = [item for item in directory.iterdir() if is_avi(item)]
     else:
         print("Directory={} is invalid.".format(directory))
     #
@@ -636,20 +662,9 @@ def do_nfos(directory, do_subdirectories=False, replace_nfos=False, nfo_type="mo
     # show = None
     # details = None
     for video in mkv_video_files:
-        if nfo_type == 'episodedetails':
-            season_num, episode_num = extract_season_episode(video)
-            if season_num and episode_num:
-                metadata, show, details = fetch_tv_metadata(series_name=series_name, series_path=directory, season_num=season_num, episode_num=episode_num, show=show, details=details)
-                nfo_file = video.with_suffix('.nfo')
-                if nfo_file.exists() and replace_nfos==False:
-                    # print("NFO file ={} already exists and overwrite={}".format(nfo_file, overwrite))
-                    return
-                # Create NFO file
-                create_nfo(metadata, nfo_file, overwrite=replace_nfos, nfo_type=nfo_type)
-            else:
-                print("Invalid Season/Episode data={}/{} for show={} in filename={}".format(season_num, episode_num, series_name, video))
-        else:
-            print("Invalid nfo_type={} for for MKV filename={}".format(nfo_type, video))
+        do_avi_mkv(video, nfo_type, series_name, directory, show, details)
+    for video in avi_video_files:
+        do_avi_mkv(video, nfo_type, series_name, directory, show, details)
     return
 
 def find_directories_without_nfo_art(directory_list):
