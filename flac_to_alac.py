@@ -22,18 +22,6 @@ def convert_flac_to_alac(flac_path: Path, m4a_path: Path, erase_original: bool) 
     print(f"Converting: {flac_path.name} → {m4a_path.name}")
 
     try:
-        # (
-        #     ffmpeg
-        #     .input(str(flac_path))
-        #     .output(
-        #         str(m4a_path),
-        #         acodec='alac',           # Apple Lossless
-        #         map_metadata=0,          # Copy all metadata
-        #         loglevel='error'         # Reduce noise
-        #     )
-        #     .overwrite_output()
-        #     .run(quiet=True)
-        # )
         (
             ffmpeg
             .input(str(flac_path))
