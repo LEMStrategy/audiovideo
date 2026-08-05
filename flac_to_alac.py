@@ -61,9 +61,9 @@ def convert_directory_and_subdirs (source_dir: Path, erase_original: bool):
         return
         
     # Do Subdirectories
-    # dir_list = [item for item in source_dir.iterdir() if item.is_dir()]
-    # for directory in dir_list:
-    #     convert_directory_and_subdirs (directory, erase_original)
+    dir_list = [item for item in source_dir.iterdir() if item.is_dir()]
+    for directory in dir_list:
+        convert_directory_and_subdirs (directory, erase_original)
 
     # Find all FLAC files recursively
     flac_files = list(source_dir.rglob("*.flac"))
