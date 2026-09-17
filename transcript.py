@@ -7,6 +7,8 @@ Created on Tue Sep 15 14:55:10 2026
 Extract a speaker-labelled transcript with WhisperX.
 """
 
+import sys
+import subprocess
 import os
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -16,18 +18,29 @@ os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
 
 import socket
 from pathlib import Path
-
 import numpy  # noqa: F401  # load MKL OpenMP first
+
 import torch
+torch.backends.cuda.matmul.allow_tf32 = True
+torch.backends.cudnn.allow_tf32 = True
 from omegaconf import ListConfig, DictConfig
 from omegaconf.base import ContainerMetadata
-
 try:
-    torch.serialization.add_safe_globals([ListConfig, DictConfig])
+    torch.serialization.add_safe_globals([ListConfig, DictConfig, ContainerMetadata])
 except Exception:
     pass
 
+import functools
+_original_load = torch.load
+@functools.wraps(_original_load)
+def _robust_load(*args, **kwargs):
+    kwargs.setdefault("weights_only", True)
+    return _original_load(*args, **kwargs)
+
+torch.load = _robust_load
+
 import whisperx
+
 
 # hostname -> (model_size, device_index, compute_type)
 HOST_MODELS = {
@@ -38,6 +51,37 @@ HOST_MODELS = {
 
 DEFAULT = ("small", 0, "int8")
 
+def upgrade_checkpoint():
+    """
+    Runs the PyTorch Lightning checkpoint upgrade command.
+    """
+    # Define the path to the checkpoint file
+    checkpoint_path = r"C:\Users\molin\miniforge3\envs\audiovideo\Lib\site-packages\whisperx\assets\pytorch_model.bin"
+    
+    # Construct the command
+    # Note: 'python -m pytorch_lightning.utilities.upgrade_checkpoint' is the CLI entry point
+    command = [
+        sys.executable, 
+        "-m", 
+        "pytorch_lightning.utilities.upgrade_checkpoint",
+        checkpoint_path
+    ]
+    
+    try:
+        # Execute the command
+        result = subprocess.run(
+            command, 
+            check=True, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        print("Upgrade successful.")
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Upgrade failed with error code {e.returncode}")
+        print(e.stderr)
+    return
 
 def pc_name() -> str:
     return (
@@ -87,6 +131,7 @@ def extract_transcript(
     num_speakers: int | None = None,
     batch_size: int = 16,
                         ) -> dict:
+    
     path = Path(media_path).expanduser().resolve()
     if not path.is_file():
         raise FileNotFoundError(path)
@@ -180,6 +225,7 @@ def extract_transcript(
     return result
 
 if __name__ == "__main__":
+    # upgrade_checkpoint()   RUN ONLY ONCE
     raw = input("Enter path to video or audio file: ").strip().strip('"')
     data = extract_transcript(raw)
     print(f"PC: {data['pc']}")
