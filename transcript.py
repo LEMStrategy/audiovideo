@@ -8,17 +8,25 @@ Extract a speaker-labelled transcript with WhisperX.
 """
 
 import os
-
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 os.environ["OMP_NUM_THREADS"] = "4"
 os.environ["MKL_NUM_THREADS"] = "4"
+os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
 
 import socket
 from pathlib import Path
 
 import numpy  # noqa: F401  # load MKL OpenMP first
 import torch
+from omegaconf import ListConfig, DictConfig
+from omegaconf.base import ContainerMetadata
+
+try:
+    torch.serialization.add_safe_globals([ListConfig, DictConfig])
+except Exception:
+    pass
+
 import whisperx
 
 # hostname -> (model_size, device_index, compute_type)
@@ -26,7 +34,7 @@ HOST_MODELS = {
     "LEM-Z440": ("large-v3", 0, "float16"),  # Titan RTX 24GB; use 1 for the 2080 Super
     # "OFFICE-PC": ("turbo", 0, "float16"),
     # "LAPTOP-X": ("small", 0, "int8_float16"),
-}
+    }
 
 DEFAULT = ("small", 0, "int8")
 
@@ -36,12 +44,16 @@ def pc_name() -> str:
         os.environ.get("COMPUTERNAME")
         or os.environ.get("HOSTNAME")
         or socket.gethostname()
-    ).split(".")[0].upper()
+        ).split(".")[0].upper()
 
 
 def _pick_device() -> tuple[str, str]:
-    if torch.cuda.is_available():
-        return "cuda", "float16"
+    try:
+        import torch
+        if getattr(torch.version, "cuda", None) and torch.cuda.is_available():
+            return "cuda", "float16"
+    except Exception:
+        pass
     try:
         import ctranslate2
         if ctranslate2.get_cuda_device_count() > 0:
@@ -86,39 +98,50 @@ def extract_transcript(
     compute_type = host_compute if device == "cuda" else auto_compute
     index = device_index if device == "cuda" else 0
 
-    if device == "cuda":
+    use_torch_cuda = False
+    try:
+        use_torch_cuda = bool(getattr(torch.version, "cuda", None)) and torch.cuda.is_available()
+    except Exception:
+        pass
+    
+    if device == "cuda" and use_torch_cuda:
         torch.cuda.set_device(index)
-        device_str = f"cuda:{index}"
+        wx_device = "cuda"
+    elif device == "cuda":
+        wx_device = "cuda"
     else:
-        device_str = "cpu"
+        wx_device = "cpu"
+        index = 0
         batch_size = 4
-
+        
     hf_token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
 
     audio = whisperx.load_audio(str(path))
 
     model = whisperx.load_model(
-        model_size,
-        device=device_str,
-        compute_type=compute_type,
-    )
+            model_size,
+            device=wx_device,          # "cuda" or "cpu" only
+            device_index=index,        # 0 = Titan if nvidia-smi lists it first
+            compute_type=compute_type,
+            )
+    
     asr = model.transcribe(audio, batch_size=batch_size, language=language)
     detected_language = asr.get("language") or language or "en"
 
     align_model, metadata = whisperx.load_align_model(
         language_code=detected_language,
-        device=device_str,
-    )
+        device=wx_device,
+        )
     asr = whisperx.align(
         asr["segments"],
         align_model,
         metadata,
         audio,
-        device_str,
+        wx_device,
         return_char_alignments=False,
-    )
+        )
 
-    diarize_kwargs = {"device": device_str}
+    diarize_kwargs = {"device": wx_device}
     if hf_token:
         diarize_kwargs["token"] = hf_token
     try:
@@ -141,13 +164,13 @@ def extract_transcript(
     result = {
         "pc": host,
         "model": model_size,
-        "device": device_str,
+        "device": wx_device,
         "device_index": index,
         "compute_type": compute_type,
         "language": detected_language,
         "text": text,
         "segments": segments,
-    }
+        }
 
     if save:
         out = path.with_suffix(".txt")
@@ -155,7 +178,6 @@ def extract_transcript(
         result["output_path"] = str(out)
 
     return result
-
 
 if __name__ == "__main__":
     raw = input("Enter path to video or audio file: ").strip().strip('"')
