@@ -14,7 +14,7 @@ os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 os.environ["OMP_NUM_THREADS"] = "4"
 os.environ["MKL_NUM_THREADS"] = "4"
-os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
+# os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
 
 import socket
 from pathlib import Path
@@ -23,33 +23,15 @@ import numpy  # noqa: F401  # load MKL OpenMP first
 import torch
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
+print("Torch:", torch.__version__)
+print("Original torch.load:", torch.load)
+
 from omegaconf import ListConfig, DictConfig
 from omegaconf.base import ContainerMetadata
 try:
     torch.serialization.add_safe_globals([ListConfig, DictConfig, ContainerMetadata])
 except Exception:
     pass
-
-import functools
-_original_load = torch.load
-@functools.wraps(_original_load)
-def _robust_load(*args, **kwargs):
-    kwargs.setdefault("weights_only", True)
-    return _original_load(*args, **kwargs)
-
-torch.load = _robust_load
-
-import whisperx
-
-
-# hostname -> (model_size, device_index, compute_type)
-HOST_MODELS = {
-    "LEM-Z440": ("large-v3", 0, "float16"),  # Titan RTX 24GB; use 1 for the 2080 Super
-    # "OFFICE-PC": ("turbo", 0, "float16"),
-    # "LAPTOP-X": ("small", 0, "int8_float16"),
-    }
-
-DEFAULT = ("small", 0, "int8")
 
 def upgrade_checkpoint():
     """
@@ -82,6 +64,39 @@ def upgrade_checkpoint():
         print(f"Upgrade failed with error code {e.returncode}")
         print(e.stderr)
     return
+# upgrade_checkpoint()   
+
+import functools
+_original_load = torch.load
+@functools.wraps(_original_load)
+def _robust_load(*args, **kwargs):
+    kwargs["weights_only"] = False
+    return _original_load(*args, **kwargs)
+torch.load = _robust_load
+
+
+from inspect import signature
+import whisperx
+from whisperx.diarize import DiarizationPipeline
+
+from importlib.metadata import version
+print("WhisperX:", version("whisperx"))
+print("PyTorch:", version("torch"))
+print("Torchaudio:", version("torchaudio"))
+print("Pyannote:", version("pyannote.audio"))
+print("HuggingFace Hub:", version("huggingface_hub"))
+
+import inspect
+print(inspect.signature(whisperx.load_align_model))
+
+# hostname -> (model_size, device_index, compute_type)
+HOST_MODELS = {
+    "LEM-Z440": ("large-v3", 0, "float16"),  # Titan RTX 24GB; use 1 for the 2080 Super
+    # "OFFICE-PC": ("turbo", 0, "float16"),
+    # "LAPTOP-X": ("small", 0, "int8_float16"),
+    }
+
+DEFAULT = ("small", 0, "int8")
 
 def pc_name() -> str:
     return (
@@ -160,15 +175,33 @@ def extract_transcript(
         batch_size = 4
         
     hf_token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
+    params = signature(DiarizationPipeline.__init__).parameters
+    print("diarize args", list(params))
 
     audio = whisperx.load_audio(str(path))
-
+    vad_method="silero"
+    print("LOAD_MODEL with modelsize={}, device={}, device_index={}, compute_type={}, vad_method={}, language={}".format(
+            model_size,
+            wx_device,
+            index,
+            compute_type,
+            vad_method,
+            language
+            )
+        )
+    
     model = whisperx.load_model(
             model_size,
-            device=wx_device,          # "cuda" or "cpu" only
-            device_index=index,        # 0 = Titan if nvidia-smi lists it first
+            device=wx_device,    # "cuda" or "cpu" only
+            device_index=index,  # 0 = Titan if nvidia-smi lists it first        
             compute_type=compute_type,
+            vad_method=vad_method,
+            language=language,   # skip extra language-detect pass if you know it
             )
+    
+    inner = model.model
+    print(inner)
+    print(getattr(inner, "model", inner))
     
     asr = model.transcribe(audio, batch_size=batch_size, language=language)
     detected_language = asr.get("language") or language or "en"
@@ -177,6 +210,7 @@ def extract_transcript(
         language_code=detected_language,
         device=wx_device,
         )
+    
     asr = whisperx.align(
         asr["segments"],
         align_model,
@@ -186,16 +220,19 @@ def extract_transcript(
         return_char_alignments=False,
         )
 
-    diarize_kwargs = {"device": wx_device}
+    diarize_kwargs = {"device": wx_device}  # "cuda" is fine here (PyTorch path)
     if hf_token:
-        diarize_kwargs["token"] = hf_token
+        if "token" in params:
+            diarize_kwargs["token"] = hf_token
+        elif "use_auth_token" in params:
+            diarize_kwargs["use_auth_token"] = hf_token
     try:
-        diarize_model = whisperx.DiarizationPipeline(**diarize_kwargs)
+        diarize_model = DiarizationPipeline(**diarize_kwargs)
     except TypeError:
         diarize_kwargs.pop("token", None)
         if hf_token:
-            diarize_kwargs["use_auth_token"] = hf_token
-        diarize_model = whisperx.DiarizationPipeline(**diarize_kwargs)
+            diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
+        diarize_model = DiarizationPipeline(**diarize_kwargs)
 
     if num_speakers is not None:
         diarize_segments = diarize_model(audio, num_speakers=num_speakers)
@@ -225,7 +262,6 @@ def extract_transcript(
     return result
 
 if __name__ == "__main__":
-    # upgrade_checkpoint()   RUN ONLY ONCE
     raw = input("Enter path to video or audio file: ").strip().strip('"')
     data = extract_transcript(raw)
     print(f"PC: {data['pc']}")
@@ -233,3 +269,7 @@ if __name__ == "__main__":
     print(f"Language: {data['language']}")
     print(data["text"][:500])
     print(f"Saved: {data['output_path']}")
+    
+    
+    
+   
