@@ -24,7 +24,7 @@ import torch
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
 print("Torch:", torch.__version__)
-print("Original torch.load:", torch.load)
+# print("Original torch.load:", torch.load)
 
 from omegaconf import ListConfig, DictConfig
 from omegaconf.base import ContainerMetadata
@@ -79,15 +79,19 @@ from inspect import signature
 import whisperx
 from whisperx.diarize import DiarizationPipeline
 
-from importlib.metadata import version
-print("WhisperX:", version("whisperx"))
-print("PyTorch:", version("torch"))
-print("Torchaudio:", version("torchaudio"))
-print("Pyannote:", version("pyannote.audio"))
-print("HuggingFace Hub:", version("huggingface_hub"))
+# from importlib.metadata import version
+# print("WhisperX:", version("whisperx"))
+# print("PyTorch:", version("torch"))
+# print("Torchaudio:", version("torchaudio"))
+# print("Pyannote:", version("pyannote.audio"))
+# print("HuggingFace Hub:", version("huggingface_hub"))
 
-import inspect
-print(inspect.signature(whisperx.load_align_model))
+# import inspect
+# print(inspect.signature(whisperx.load_align_model))
+
+from typing import Iterable, Sequence
+
+
 
 # hostname -> (model_size, device_index, compute_type)
 HOST_MODELS = {
@@ -97,6 +101,46 @@ HOST_MODELS = {
     }
 
 DEFAULT = ("small", 0, "int8")
+
+# FFMPEG supported Audio/Video Extensions
+AUDIO_EXTS = [".wav", ".wave", ".mp3", ".m4a", ".aac", ".flac", ".ogg", ".oga", 
+              ".opus", ".wma", ".aiff", ".aif", ".aifc", ".amr",  ".mp2", ".mpga", 
+              ".mka", ".caf", ".ac3", ".eac3", ".dts", ".weba"
+              ]
+
+# LIST 3 — video (audio track extracted)
+VIDEO_EXTS = [ ".mp4", ".m4v", ".mkv", ".webm", ".mov", ".avi", ".wmv", ".flv",
+              ".mpeg", ".mpg", ".mpe", ".m2v", ".ts", ".m2ts", ".mts", ".3gp", 
+              ".3g2", ".ogv", ".asf", ".vob", ".f4v"
+              ]
+
+ALL_EXTS = AUDIO_EXTS + VIDEO_EXTS
+
+model = None
+
+def media_files(path: str | Path, extensions: Sequence[str]) -> list[Path]:
+    """Return files under *path* whose suffix is in *extensions*.
+
+    *path* may be a file or a directory.
+    Extensions may be given with or without a leading dot and are
+    matched case-insensitively.
+    """
+    path = Path(path)
+    allowed = {
+        ext.lower() if ext.startswith(".") else f".{ext.lower()}"
+        for ext in extensions
+    }
+
+    if path.is_file():
+        return [path] if path.suffix.lower() in allowed else []
+
+    if path.is_dir():
+        return sorted(
+            p for p in path.iterdir()
+            if p.is_file() and p.suffix.lower() in allowed
+        )
+
+    return []
 
 def pc_name() -> str:
     return (
@@ -138,6 +182,46 @@ def _format_transcript(segments: list[dict]) -> str:
             lines.append(text)
     return "\n".join(lines).strip()
 
+def ts(t):
+    h, rem = divmod(float(t), 3600)
+    m, s = divmod(rem, 60)
+    return f"{int(h):02d}:{int(m):02d}:{int(s):02d},{int(round((s % 1) * 1000)):03d}"
+
+def segments_to_dialogue_cues(segments):
+    cues = []
+    for seg in segments:
+        words = seg.get("words") or []
+        if not words:
+            text = (seg.get("text") or "").strip()
+            if text:
+                cues.append((seg["start"], seg["end"], text))
+            continue
+
+        cur_spk = words[0].get("speaker", seg.get("speaker"))
+        buf, t0 = [], words[0]["start"]
+        last_end = words[0]["end"]
+
+        for w in words:
+            spk = w.get("speaker", cur_spk)
+            if spk != cur_spk and buf:
+                cues.append((t0, last_end, " ".join(buf).strip()))
+                buf, t0, cur_spk = [], w["start"], spk
+            token = (w.get("word") or "").strip()
+            if token:
+                buf.append(token)
+            last_end = w.get("end", last_end)
+
+        if buf:
+            cues.append((t0, last_end, " ".join(buf).strip()))
+    return cues
+
+def write_dialogue_srt(cues, path):
+    with open(path, "w", encoding="utf-8") as f:
+        for i, (start, end, text) in enumerate(cues, 1):
+            text = text.strip()
+            if not text:
+                continue
+            f.write(f"{i}\n{ts(start)} --> {ts(end)}\n- {text}\n\n")
 
 def extract_transcript(
     media_path: str | Path,
@@ -182,27 +266,29 @@ def extract_transcript(
     audio = whisperx.load_audio(str(path))
     vad_method="silero"
 
-    print("LOAD_MODEL with modelsize={}, device={}, device_index={}, compute_type={}, vad_method={}, language={}".format(
-            model_size,
-            wx_device,
-            index,
-            compute_type,
-            vad_method,
-            language
-            )
-        )
-    model = whisperx.load_model(
-            model_size,
-            device=wx_device,    # "cuda" or "cpu" only
-            device_index=index,  # 0 = Titan if nvidia-smi lists it first        
-            compute_type=compute_type,
-            vad_method=vad_method,
-            language=language,   # skip extra language-detect pass if you know it
-            )
+    # print("LOAD_MODEL with modelsize={}, device={}, device_index={}, compute_type={}, vad_method={}, language={}".format(
+    #         model_size,
+    #         wx_device,
+    #         index,
+    #         compute_type,
+    #         vad_method,
+    #         language
+    #         )
+    #     )
     
-    inner = model.model
-    print(inner)
-    print(getattr(inner, "model", inner))
+    if model is None:
+        model = whisperx.load_model(
+                model_size,
+                device=wx_device,    # "cuda" or "cpu" only
+                device_index=index,  # 0 = Titan if nvidia-smi lists it first        
+                compute_type=compute_type,
+                vad_method=vad_method,
+                language=language,   # skip extra language-detect pass if you know it
+                )
+    
+    # inner = model.model
+    # print(inner)
+    # print(getattr(inner, "model", inner))
     
     asr = model.transcribe(audio, batch_size=batch_size, language=language)
     detected_language = asr.get("language") or language or "en"
@@ -220,85 +306,74 @@ def extract_transcript(
         wx_device,
         return_char_alignments=False,
         )
+      
     
-    if save and save_srt:
-        from whisperx.utils import get_writer
-        writer = get_writer("srt", path.parent)
-        out = path.with_suffix("{}.srt".format("."+detected_language if (detected_language is not None) else ""))
-        result = {
-            "segments": asr["segments"] if isinstance(asr, dict) else asr,
-            "language": detected_language,
-            }
-
-        writer(
-            result,
-            out,
-            {
-                "max_line_width": 42,
-                "max_line_count": 2,
-                "highlight_words": False,
-            }
-        )
-        return
-    else:
-        diarize_kwargs = {"device": wx_device}  # "cuda" is fine here (PyTorch path)
+    diarize_kwargs = {"device": wx_device}  # "cuda" is fine here (PyTorch path)
+    if hf_token:
+        if "token" in params:
+            diarize_kwargs["token"] = hf_token
+        elif "use_auth_token" in params:
+            diarize_kwargs["use_auth_token"] = hf_token
+    try:
+        diarize_model = DiarizationPipeline(**diarize_kwargs)
+    except TypeError:
+        diarize_kwargs.pop("token", None)
         if hf_token:
-            if "token" in params:
-                diarize_kwargs["token"] = hf_token
-            elif "use_auth_token" in params:
-                diarize_kwargs["use_auth_token"] = hf_token
-        try:
-            diarize_model = DiarizationPipeline(**diarize_kwargs)
-        except TypeError:
-            diarize_kwargs.pop("token", None)
-            if hf_token:
-                diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
-            diarize_model = DiarizationPipeline(**diarize_kwargs)
+            diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
+        diarize_model = DiarizationPipeline(**diarize_kwargs)
+
+    if num_speakers is not None:
+        diarize_segments = diarize_model(audio, num_speakers=num_speakers)
+    else:
+        diarize_segments = diarize_model(audio)
+
+    asr = whisperx.assign_word_speakers(diarize_segments, asr)
+    segments = asr.get("segments") or []
+    text = _format_transcript(segments)
+
+    result = {
+        "pc": host,
+        "model": model_size,
+        "device": wx_device,
+        "device_index": index,
+        "compute_type": compute_type,
+        "language": detected_language,
+        "text": text,
+        "segments": segments,
+        }
     
-        if num_speakers is not None:
-            diarize_segments = diarize_model(audio, num_speakers=num_speakers)
+    if save:
+        if save_srt:
+            out = path.with_suffix("{}.srt".format("."+detected_language if (detected_language is not None) else ""))
+            cues = segments_to_dialogue_cues(result["segments"])
+            write_dialogue_srt(cues, out)
         else:
-            diarize_segments = diarize_model(audio)
-    
-        asr = whisperx.assign_word_speakers(diarize_segments, asr)
-        segments = asr.get("segments") or []
-        text = _format_transcript(segments)
-    
-        result = {
-            "pc": host,
-            "model": model_size,
-            "device": wx_device,
-            "device_index": index,
-            "compute_type": compute_type,
-            "language": detected_language,
-            "text": text,
-            "segments": segments,
-            }
-    
-        if save:
             out = path.with_suffix(".txt")
             out.write_text(text, encoding="utf-8")
             result["output_path"] = str(out)
-    
-        return result
+
+    return result
 
 if __name__ == "__main__":
-    raw = input("Enter path to video or audio file: ").strip().strip('"')
+    raw = input("Enter path to Directory or video/audio file: ").strip().strip('"')
     save_srt = False
-    response = input("Write Movie SRT (y/n): ")
+    response = input("Write Transcript in SRT (y/n): ")
     if response=='y' or response=='Y'  :
         save_srt = True
-    data = extract_transcript(media_path=raw, 
-                              language= None,
-                              save= True,
-                              num_speakers = None,
-                              batch_size = 16,
-                              save_srt=save_srt)
-    print(f"PC: {data['pc']}")
-    print(f"Device: {data['device']} ({data['compute_type']})")
-    print(f"Language: {data['language']}")
-    print(data["text"][:500])
-    print(f"Saved: {data['output_path']}")
+    all_raw = media_files(raw, ALL_EXTS)
+    for raw in all_raw:
+        data = extract_transcript(media_path=raw, 
+                                  language= None,
+                                  save= True,
+                                  num_speakers = None,
+                                  batch_size = 16,
+                                  save_srt=save_srt)
+        print(f"PC: {data['pc']}")!
+        # print(f"Device: {data['device']} ({data['compute_type']})")
+        # print(f"Language: {data['language']}")
+        print(data["text"][:50])
+        # print(f"Saved: {data['output_path']}")
+        print('--------------------------------------------------------')
     
     
     

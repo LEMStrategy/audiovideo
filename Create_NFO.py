@@ -528,35 +528,43 @@ def is_avi(avi_file):
     return False
 
 
+SXXEXX = re.compile(r"[\s._-]*[Ss](\d{2})[Ee](\d{2})")
+SXXEXX_AT_END = re.compile(r"[\s._-]*[Ss](\d{2})[Ee](\d{2})$")
+
+def _pad(n):
+    return str(n).zfill(2)
+
 def is_kodi_compliant(filename, season, episode):
-    """Check if filename ends with SxxExx and matches given season/episode."""
-    # Pattern: S followed by 2 digits, E followed by 2 digits, before extension
-    pattern = r"S(\d{2})E(\d{2})(?=\.\w+$)"
-    pattern_match = re.search(pattern, filename, re.IGNORECASE)
+    """True if the stem already ends with matching SxxExx."""
+    stem = Path(filename).stem
+    m = SXXEXX_AT_END.search(stem)
+    if not m:
+        return False
+    return m.group(1) == _pad(season) and m.group(2) == _pad(episode)
 
-    if not pattern_match:
-        return False  # No SxxExx pattern found
-
-    # Extract season and episode from filename
-    file_season, file_episode = pattern_match.groups()
-
-    # Compare with passed metadata (padded to 2 digits)
-    return file_season == str(season).zfill(2) and file_episode == str(episode).zfill(2)
+def strip_sxxexx(stem):
+    """Remove every SxxExx token and tidy leftover separators."""
+    cleaned = SXXEXX.sub("", stem)
+    return re.sub(r"[\s._-]+$", "", cleaned).strip()
 
 def rename_for_kodi(m4v_file, season, episode):
-    """Rename file to append SxxExx only if not already compliant."""
-    m4v_path = Path(m4v_file)
-    current_name = m4v_path.name  # e.g., "01 From Pole to Pole (1080p HD).m4v"
+    """Rename so the stem ends with exactly one SxxExx for this episode."""
+    path = Path(m4v_file)
+    if is_kodi_compliant(path.name, season, episode):
+        print(f"{path.name} is already Kodi-compliant.")
+        return path
 
-    if is_kodi_compliant(current_name, season, episode):
-        print(f"{current_name} is already Kodi-compliant.")
-        return m4v_path  # No rename needed
+    tag = f"S{_pad(season)}E{_pad(episode)}"
+    new_name = f"{strip_sxxexx(path.stem)} {tag}{path.suffix}"
+    new_path = path.with_name(new_name)
 
-    # Append SxxExx before the extension
-    new_name = f"{m4v_path.stem} S{season.zfill(2)}E{episode.zfill(2)}{m4v_path.suffix}"
-    new_path = m4v_path.parent / new_name
-    m4v_path.rename(new_path)
-    print(f"Renamed {current_name} to {new_name}")
+    if new_path == path:
+        return path
+    if new_path.exists():
+        raise FileExistsError(f"Target already exists: {new_path}")
+
+    path.rename(new_path)
+    print(f"Renamed {path.name} to {new_name}")
     return new_path
 
 def get_nfo (m4v_file, overwrite=True, nfo_type='movie', series_name=None, show=None):
