@@ -66,13 +66,13 @@ def upgrade_checkpoint():
     return
 # upgrade_checkpoint()   
 
-import functools
-_original_load = torch.load
-@functools.wraps(_original_load)
-def _robust_load(*args, **kwargs):
-    kwargs["weights_only"] = False
-    return _original_load(*args, **kwargs)
-torch.load = _robust_load
+# import functools
+# _original_load = torch.load
+# @functools.wraps(_original_load)
+# def _robust_load(*args, **kwargs):
+#     kwargs["weights_only"] = False
+#     return _original_load(*args, **kwargs)
+# torch.load = _robust_load
 
 
 from inspect import signature
@@ -145,6 +145,7 @@ def extract_transcript(
     save: bool = True,
     num_speakers: int | None = None,
     batch_size: int = 16,
+    save_srt: bool = False
                         ) -> dict:
     
     path = Path(media_path).expanduser().resolve()
@@ -176,10 +177,11 @@ def extract_transcript(
         
     hf_token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
     params = signature(DiarizationPipeline.__init__).parameters
-    print("diarize args", list(params))
+    # print("diarize args", list(params))
 
     audio = whisperx.load_audio(str(path))
     vad_method="silero"
+
     print("LOAD_MODEL with modelsize={}, device={}, device_index={}, compute_type={}, vad_method={}, language={}".format(
             model_size,
             wx_device,
@@ -189,7 +191,6 @@ def extract_transcript(
             language
             )
         )
-    
     model = whisperx.load_model(
             model_size,
             device=wx_device,    # "cuda" or "cpu" only
@@ -219,51 +220,80 @@ def extract_transcript(
         wx_device,
         return_char_alignments=False,
         )
+    
+    if save and save_srt:
+        from whisperx.utils import get_writer
+        writer = get_writer("srt", path.parent)
+        out = path.with_suffix("{}.srt".format("."+detected_language if (detected_language is not None) else ""))
+        result = {
+            "segments": asr["segments"] if isinstance(asr, dict) else asr,
+            "language": detected_language,
+            }
 
-    diarize_kwargs = {"device": wx_device}  # "cuda" is fine here (PyTorch path)
-    if hf_token:
-        if "token" in params:
-            diarize_kwargs["token"] = hf_token
-        elif "use_auth_token" in params:
-            diarize_kwargs["use_auth_token"] = hf_token
-    try:
-        diarize_model = DiarizationPipeline(**diarize_kwargs)
-    except TypeError:
-        diarize_kwargs.pop("token", None)
-        if hf_token:
-            diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
-        diarize_model = DiarizationPipeline(**diarize_kwargs)
-
-    if num_speakers is not None:
-        diarize_segments = diarize_model(audio, num_speakers=num_speakers)
+        writer(
+            result,
+            out,
+            {
+                "max_line_width": 42,
+                "max_line_count": 2,
+                "highlight_words": False,
+            }
+        )
+        return
     else:
-        diarize_segments = diarize_model(audio)
-
-    asr = whisperx.assign_word_speakers(diarize_segments, asr)
-    segments = asr.get("segments") or []
-    text = _format_transcript(segments)
-
-    result = {
-        "pc": host,
-        "model": model_size,
-        "device": wx_device,
-        "device_index": index,
-        "compute_type": compute_type,
-        "language": detected_language,
-        "text": text,
-        "segments": segments,
-        }
-
-    if save:
-        out = path.with_suffix(".txt")
-        out.write_text(text, encoding="utf-8")
-        result["output_path"] = str(out)
-
-    return result
+        diarize_kwargs = {"device": wx_device}  # "cuda" is fine here (PyTorch path)
+        if hf_token:
+            if "token" in params:
+                diarize_kwargs["token"] = hf_token
+            elif "use_auth_token" in params:
+                diarize_kwargs["use_auth_token"] = hf_token
+        try:
+            diarize_model = DiarizationPipeline(**diarize_kwargs)
+        except TypeError:
+            diarize_kwargs.pop("token", None)
+            if hf_token:
+                diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
+            diarize_model = DiarizationPipeline(**diarize_kwargs)
+    
+        if num_speakers is not None:
+            diarize_segments = diarize_model(audio, num_speakers=num_speakers)
+        else:
+            diarize_segments = diarize_model(audio)
+    
+        asr = whisperx.assign_word_speakers(diarize_segments, asr)
+        segments = asr.get("segments") or []
+        text = _format_transcript(segments)
+    
+        result = {
+            "pc": host,
+            "model": model_size,
+            "device": wx_device,
+            "device_index": index,
+            "compute_type": compute_type,
+            "language": detected_language,
+            "text": text,
+            "segments": segments,
+            }
+    
+        if save:
+            out = path.with_suffix(".txt")
+            out.write_text(text, encoding="utf-8")
+            result["output_path"] = str(out)
+    
+        return result
 
 if __name__ == "__main__":
     raw = input("Enter path to video or audio file: ").strip().strip('"')
-    data = extract_transcript(raw)
+    save_srt = False
+    response = input("Write Movie SRT (y/n): ")
+    if response=='y' or response=='Y'  :
+        save_srt = True
+    data = extract_transcript(media_path=raw, 
+                              language= None,
+                              save= True,
+                              num_speakers = None,
+                              batch_size = 16,
+                              save_srt=save_srt)
     print(f"PC: {data['pc']}")
     print(f"Device: {data['device']} ({data['compute_type']})")
     print(f"Language: {data['language']}")
