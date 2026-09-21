@@ -9,6 +9,7 @@ Extract a speaker-labelled transcript with WhisperX.
 
 import sys
 import subprocess
+import gc
 import os
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -21,8 +22,6 @@ from pathlib import Path
 import numpy  # noqa: F401  # load MKL OpenMP first
 
 import torch
-torch.backends.cuda.matmul.allow_tf32 = True
-torch.backends.cudnn.allow_tf32 = True
 print("Torch:", torch.__version__)
 # print("Original torch.load:", torch.load)
 
@@ -388,7 +387,10 @@ def extract_transcript(
     # print(getattr(inner, "model", inner))
     print("---->Transcribing")
     asr = model.transcribe(audio, batch_size=batch_size, language=language)
-    detected_language = asr.get("language") or language or "en"
+    if language is None:
+        detected_language = asr.get("language") or "en"
+    else:
+        detected_language = language
     print("---->Alligning Model")
     align_model, metadata = whisperx.load_align_model(
         language_code=detected_language,
@@ -403,8 +405,8 @@ def extract_transcript(
         wx_device,
         return_char_alignments=False,
         )
-      
     
+    print("---->Diarinzing")
     diarize_kwargs = {"device": wx_device}  # "cuda" is fine here (PyTorch path)
     if hf_token:
         if "token" in params:
@@ -418,7 +420,8 @@ def extract_transcript(
         if hf_token:
             diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
         diarize_model = DiarizationPipeline(**diarize_kwargs)
-    print("---->Diarinzing")
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
     if num_speakers is not None:
         diarize_segments = diarize_model(audio, num_speakers=num_speakers)
     else:
@@ -441,7 +444,6 @@ def extract_transcript(
         }
     
     if save:
-        print("---->Saving")
         if save_srt:
             out = path.with_suffix("{}.srt".format("."+detected_language if (detected_language is not None) else ""))
             cues = segments_to_dialogue_cues(result["segments"])
@@ -450,6 +452,7 @@ def extract_transcript(
             out = path.with_suffix(".txt")
             out.write_text(text, encoding="utf-8")
             result["output_path"] = str(out)
+        print(f"---->Saved to={out}")
 
     return result
 
@@ -459,22 +462,64 @@ if __name__ == "__main__":
     response = input("Write Transcript in SRT (y/n): ")
     if response=='y' or response=='Y'  :
         save_srt = True
+    response = input("Language [1=eng, 2=spa, enter=autodetect]: ")
+    if response=='1':
+        language = 'en'
+    elif response=='2':
+        language = 'es'
+    else:
+        language = None
     all_raw = media_files(raw, ALL_EXTS)
     for raw in all_raw:
         print('--------------------------------------------------------')
         print(f"Proccesing: {str(raw)}")
         data = extract_transcript(media_path=raw, 
-                                  language= None,
+                                  language=language,
                                   save= True,
                                   num_speakers = None,
                                   batch_size = 16,
                                   save_srt=save_srt)
+        gc.collect()
+        torch.cuda.empty_cache()
         print(f"PC: {data['pc']}")
         # print(f"Device: {data['device']} ({data['compute_type']})")
         # print(f"Language: {data['language']}")
         print(data["text"][:50])
         
     
-    
+all_raw = [
+'K:\Boris_iTunes\Movies\Bodas De Sangre\Bodas De Sangre.m4v',
+'K:\Boris_iTunes\Movies\Carmen\Carmen.m4v', 
+'K:\Boris_iTunes\Movies\El Amor Brujo\El Amor Brujo.m4v',
+'K:\Boris_iTunes\Movies\El Bola\El Bola.m4v'  ,
+'K:\Boris_iTunes\Movies\El Extraño Viaje\El Extraño Viaje.m4v'  ,
+'K:\Boris_iTunes\Movies\El Laberinto del Fauno\El Laberinto del Fauno.m4v'  ,
+'K:\Boris_iTunes\Movies\El Niño Es Nuestro\El Niño Es Nuestro.m4v'  ,
+'K:\Boris_iTunes\Movies\El primer amor\El primer amor.m4v'  ,
+'K:\Boris_iTunes\Movies\El Secreto De Sus Ojos (2009)\El Secreto De Sus Ojos (2009).mkv',
+'K:\Boris_iTunes\Movies\El Verdugo\El Verdugo.m4v',
+'K:\Boris_iTunes\Movies\Furtivos\Furtivos.m4v',
+'K:\Boris_iTunes\Movies\La Caza\La Caza.m4v',
+'K:\Boris_iTunes\Movies\La Corte del Faraón\La Corte del Faraón.m4v',
+'K:\Boris_iTunes\Movies\La Lengua de las Mariposas\La Lengua de las Mariposas.m4v',
+'K:\Boris_iTunes\Movies\Los Amantes del Círculo Polar\Los Amantes del Círculo Polar.m4v',
+'K:\Boris_iTunes\Movies\Los Olvidados\Los Olvidados.m4v',
+'K:\Boris_iTunes\Movies\Los Santos Inocentes\Los Santos Inocentes.m4v',
+'K:\Boris_iTunes\Movies\Los Secretos del Corazón\Los Secretos del Corazón.m4v',
+'K:\Boris_iTunes\Movies\Lucia y el Sexo\Lucia y el Sexo.m4v',
+'K:\Boris_iTunes\Movies\Mientras Dure La Guerra\Mientras Dure La Guerra.m4v',
+r'K:\Boris_iTunes\Movies\Nueve Reinas (2000)\Nueve Reinas (2000).mkv',
+'K:\Boris_iTunes\Movies\Pepi Luci Bom\Pepi Luci Bom.m4v',
+'K:\Boris_iTunes\Movies\Permiso Para Pensar\Permiso Para Pensar.m4v',
+'K:\Boris_iTunes\Movies\Placido\Placido.m4v',
+'K:\Boris_iTunes\Movies\Rosaura a las Diez (1958)\Rosaura a las Diez (1958).mp4',
+'K:\Boris_iTunes\Movies\Simon of the Desert\Simon of the Desert.m4v',
+'K:\Boris_iTunes\Movies\Viridiana\Viridiana.m4v']
+
+'K:\Boris_iTunes\Movies\Amantes\Amantes.m4v', 
+'K:\Boris_iTunes\Movies\Atraco a las Tres\\Atraco a las Tres.m4v', 
+'K:\Boris_iTunes\Movies\Bienvenido Mister Marshall\Bienvenido Mister Marshall.m4v', 
+'K:\Boris_iTunes\Movies\Bilbao\Bilbao.m4v',
+'K:\Boris_iTunes\Movies\Ópera Prima\Ópera Prima\Ópera Prima.m4v']
     
    
