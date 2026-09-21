@@ -58,22 +58,37 @@ def upgrade_checkpoint():
             stderr=subprocess.PIPE,
             text=True
         )
-        print("Upgrade successful.")
-        print(result.stdout)
+        # print("Upgrade successful.")
+        # print(result.stdout)
     except subprocess.CalledProcessError as e:
         print(f"Upgrade failed with error code {e.returncode}")
         print(e.stderr)
     return
-# upgrade_checkpoint()   
 
-# import functools
-# _original_load = torch.load
-# @functools.wraps(_original_load)
-# def _robust_load(*args, **kwargs):
-#     kwargs["weights_only"] = False
-#     return _original_load(*args, **kwargs)
-# torch.load = _robust_load
+try:
+    if Upgraded:
+        pass
+except Exception:
+        upgrade_checkpoint()   
+        Upgraded = True
+        print("**** UPGRADED ****")
 
+import functools
+_original_load = torch.load
+@functools.wraps(_original_load)
+def _robust_load(*args, **kwargs):
+    kwargs["weights_only"] = False
+    return _original_load(*args, **kwargs)
+
+    
+try: 
+    if robust_loaded:
+        pass
+except Exception:
+        torch.load = _robust_load
+        robust_loaded = True
+        print("**** ROBUST LOADED ****")
+        
 
 from inspect import signature
 import whisperx
@@ -115,6 +130,13 @@ VIDEO_EXTS = [ ".mp4", ".m4v", ".mkv", ".webm", ".mov", ".avi", ".wmv", ".flv",
               ]
 
 ALL_EXTS = AUDIO_EXTS + VIDEO_EXTS
+
+MIN_DURATION = 1.00      # seconds on screen (BBC-ish floor)
+HOLD_AFTER = 1.00        # extra after last spoken word (try 1.0–1.5)
+MIN_GAP = 0.080          # 80 ms so players can clear the previous cue
+MAX_DURATION = 7.00      # Netflix cap
+MAX_LINE_CHARS = 42
+
 
 model = None
 
@@ -182,10 +204,18 @@ def _format_transcript(segments: list[dict]) -> str:
             lines.append(text)
     return "\n".join(lines).strip()
 
-def ts(t):
-    h, rem = divmod(float(t), 3600)
+def ts(t: float) -> str:
+    t = max(0.0, float(t))
+    h, rem = divmod(t, 3600)
     m, s = divmod(rem, 60)
-    return f"{int(h):02d}:{int(m):02d}:{int(s):02d},{int(round((s % 1) * 1000)):03d}"
+    ms = int(round((s % 1) * 1000))
+    if ms == 1000:
+        s, ms = s + 1, 0
+    return f"{int(h):02d}:{int(m):02d}:{int(s):02d},{ms:03d}"
+
+def _line(text: str) -> str:
+    text = " ".join((text or "").split())
+    return text if text.startswith("- ") else f"- {text}"
 
 def segments_to_dialogue_cues(segments):
     cues = []
@@ -215,13 +245,77 @@ def segments_to_dialogue_cues(segments):
             cues.append((t0, last_end, " ".join(buf).strip()))
     return cues
 
-def write_dialogue_srt(cues, path):
-    with open(path, "w", encoding="utf-8") as f:
-        for i, (start, end, text) in enumerate(cues, 1):
-            text = text.strip()
-            if not text:
+
+def write_dialogue_srt(
+    cues,
+    path,
+    min_duration=MIN_DURATION,
+    hold_after=HOLD_AFTER,
+    min_gap=MIN_GAP,
+    max_duration=MAX_DURATION,
+                    ):
+    """
+    cues: iterable of (start, end, text) from segments_to_dialogue_cues().
+    Extends each cue for reading time, then either dual-line merges
+    overlapping turns or trims the previous out-time.
+    """
+    raw = []
+    for start, end, text in cues:
+        text = " ".join((text or "").split())
+        if text:
+            raw.append([float(start), float(end), text])
+    raw.sort(key=lambda c: (c[0], c[1]))
+
+    timed = []
+    for start, end, text in raw:
+        end = max(end, start + min_duration, end + hold_after)
+        end = min(end, start + max_duration)
+        if end > start:
+            timed.append([start, end, text])
+
+    resolved = []
+    for start, end, text in timed:
+        if not resolved:
+            resolved.append([start, end, text])
+            continue
+
+        prev = resolved[-1]
+        limit = start - min_gap
+
+        if prev[1] <= limit:
+            resolved.append([start, end, text])
+            continue
+
+        # Collision: prefer a dual-speaker (or two-beat) 2-line cue
+        merged_text = f"{_line(prev[2])}\n{_line(text)}"
+        merged_ok = (
+            merged_text.count("\n") == 1
+            and all(len(line) <= MAX_LINE_CHARS + 2 for line in merged_text.splitlines())
+        )
+        if merged_ok:
+            prev[1] = min(max(prev[1], end), prev[0] + max_duration)
+            prev[2] = merged_text
+            continue
+
+        # Cannot merge: chain — keep speech in-time of next, shorten previous
+        if limit > prev[0] + 0.3:
+            prev[1] = limit
+            resolved.append([start, end, text])
+        else:
+            # Next starts almost immediately; attach as second line anyway
+            prev[1] = min(max(prev[1], end), prev[0] + max_duration)
+            prev[2] = merged_text
+
+    out = Path(path)
+    with out.open("w", encoding="utf-8") as f:
+        n = 1
+        for start, end, text in resolved:
+            if end <= start:
                 continue
-            f.write(f"{i}\n{ts(start)} --> {ts(end)}\n- {text}\n\n")
+            body = text if "\n" in text else _line(text)
+            f.write(f"{n}\n{ts(start)} --> {ts(end)}\n{body}\n\n")
+            n += 1
+    return out
 
 def extract_transcript(
     media_path: str | Path,
@@ -232,6 +326,7 @@ def extract_transcript(
     save_srt: bool = False
                         ) -> dict:
     
+    global model
     path = Path(media_path).expanduser().resolve()
     if not path.is_file():
         raise FileNotFoundError(path)
@@ -263,6 +358,7 @@ def extract_transcript(
     params = signature(DiarizationPipeline.__init__).parameters
     # print("diarize args", list(params))
 
+    print("---->Extrating Audio")
     audio = whisperx.load_audio(str(path))
     vad_method="silero"
 
@@ -277,6 +373,7 @@ def extract_transcript(
     #     )
     
     if model is None:
+        print("---->Loading Model")
         model = whisperx.load_model(
                 model_size,
                 device=wx_device,    # "cuda" or "cpu" only
@@ -289,15 +386,15 @@ def extract_transcript(
     # inner = model.model
     # print(inner)
     # print(getattr(inner, "model", inner))
-    
+    print("---->Transcribing")
     asr = model.transcribe(audio, batch_size=batch_size, language=language)
     detected_language = asr.get("language") or language or "en"
-
+    print("---->Alligning Model")
     align_model, metadata = whisperx.load_align_model(
         language_code=detected_language,
         device=wx_device,
         )
-    
+    print("---->Alligning")
     asr = whisperx.align(
         asr["segments"],
         align_model,
@@ -321,12 +418,13 @@ def extract_transcript(
         if hf_token:
             diarize_kwargs["use_auth_token"] = hf_token  # older whisperx
         diarize_model = DiarizationPipeline(**diarize_kwargs)
-
+    print("---->Diarinzing")
     if num_speakers is not None:
         diarize_segments = diarize_model(audio, num_speakers=num_speakers)
     else:
         diarize_segments = diarize_model(audio)
-
+        
+    print("---->Assigning Speakers")
     asr = whisperx.assign_word_speakers(diarize_segments, asr)
     segments = asr.get("segments") or []
     text = _format_transcript(segments)
@@ -343,10 +441,11 @@ def extract_transcript(
         }
     
     if save:
+        print("---->Saving")
         if save_srt:
             out = path.with_suffix("{}.srt".format("."+detected_language if (detected_language is not None) else ""))
             cues = segments_to_dialogue_cues(result["segments"])
-            write_dialogue_srt(cues, out)
+            write_dialogue_srt(cues,out, min_duration=1.0, hold_after=1.5)
         else:
             out = path.with_suffix(".txt")
             out.write_text(text, encoding="utf-8")
@@ -362,18 +461,19 @@ if __name__ == "__main__":
         save_srt = True
     all_raw = media_files(raw, ALL_EXTS)
     for raw in all_raw:
+        print('--------------------------------------------------------')
+        print(f"Proccesing: {str(raw)}")
         data = extract_transcript(media_path=raw, 
                                   language= None,
                                   save= True,
                                   num_speakers = None,
                                   batch_size = 16,
                                   save_srt=save_srt)
-        print(f"PC: {data['pc']}")!
+        print(f"PC: {data['pc']}")
         # print(f"Device: {data['device']} ({data['compute_type']})")
         # print(f"Language: {data['language']}")
         print(data["text"][:50])
-        # print(f"Saved: {data['output_path']}")
-        print('--------------------------------------------------------')
+        
     
     
     
